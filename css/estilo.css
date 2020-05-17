@@ -1,0 +1,60 @@
+/* * {
+    background-color: #273c75;
+} */
+
+.logo {
+    margin: 0 0 0 0;
+    height: 50px;
+    width: 50px;
+    /* float: right; */
+}
+
+#barra-buscador, .input-group-text {
+    margin: 10px 0 0 0;
+}
+
+.logo-campana, .logo-bandera-argentina {
+    height: 40px;
+    width: 40px;
+    margin: 10px 0 0 0;
+    /* float: left; */
+}
+
+.menu-superior {
+    min-height: 65px;
+    background-color: #273c75;
+}
+
+.boton-superior {
+    margin: 10px 0 0 0;
+    background-color: #273c75;
+    /* float: left; */
+}
+
+.menu-usuario .col-1, .menu-usuario .col-5, .menu-usuario .col-2 {
+    background-color: #487eb0;
+}
+
+.menu-usuario .boton-usuario {
+    margin: 10px 0 10px 20px;
+    background-color: #487eb0;
+}
+
+.logo-carrito {
+    height: 40px;
+    width: 40px;
+    margin: 10px 0 0 0;
+    background-color: #487eb0;
+}
+
+.carousel-item-fuente-h1 {
+    font-size: 800%;
+    color: black;
+    -webkit-text-stroke: 2px white;
+}
+
+.carousel-item-fuente-p {
+    font-size: 400%;
+    color: black;
+    -webkit-text-stroke: 2px white;
+}
