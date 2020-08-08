@@ -2,10 +2,23 @@ const db = require('mysql');
 const Promise = require('promise');
 
 config = {
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT,
-    user: process.env.MYSQL_ROOT_USER,
-    password: process.env.MYSQL_ROOT_PASSWORD
+    host: "mysql.matanga.net.ar",
+    port: 3306,
+    user: "root",
+    password: "uade" 
+}
+
+module.exports.tabla = {
+    categorias: "categorias",
+    estados: "estados",
+    marcas: "marcas",
+    operaciones: "operaciones",
+    pagos: "pagos",
+    productos: "productos",
+    productos_operaciones: "productos_operaciones",
+    productos_usuarios: "productos_usuarios",
+    provincias: "provincias",
+    usuarios: "usuarios"
 }
 
 module.exports.conectar_a_mysql = () => {
