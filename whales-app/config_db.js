@@ -81,39 +81,27 @@ function listar_tablas_callback (err, resultado) {
 
 module.exports.listar_tablas = (nombre_de_la_base_de_datos) => con.query("SELECT table_name FROM information_schema.tables WHERE table_schema = '" + nombre_de_la_base_de_datos + "'", listar_tablas_callback);
 
-module.exports.select_a_base_de_datos = (array_de_campos, nombre_de_tabla, filtro, get_usuario) => {
-    //if (err) throw err;
+module.exports.select_a_base_de_datos = (query, array_get_usuario) => {
     return new Promise((resolve, reject) => {
-        if (!filtro) {
-            con.query("SELECT " + array_de_campos.join() + " FROM " + nombre_de_tabla, (err, resultado) => {
+        if (!array_get_usuario) {
+            con.query(query, (err, resultado) => {
                 if (err) {
                     reject(err);
                 } else {
                     console.log(resultado);
                     resolve(resultado);
                 }
-            });
+            });    
         } else {
-            if (!get_usuario) {
-                con.query("SELECT " + array_de_campos.join() + " FROM " + nombre_de_tabla + " WHERE " + filtro, (err, resultado) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        console.log(resultado);
-                        resolve(resultado);
-                    }
-                });
-            } else {
-                con.query("SELECT " + array_de_campos.join() + " FROM " + nombre_de_tabla + " WHERE " + filtro, get_usuario, (err, resultado) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        console.log(resultado);
-                        resolve(resultado);
-                    }
-                }); 
-            }
-        } 
+            con.query(query, array_get_usuario, (err, resultado) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log(resultado);
+                    resolve(resultado);
+                }
+            }); 
+        }
     });
 }
 
@@ -131,11 +119,3 @@ module.exports.format_date = () => {
     var date = date.setHours(date.getHours() - date.getTimezoneOffset()/60);
     return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
 }
-
-//module.exports.api_send_status_y_data = () => {
-//
-//}
-
-//module.exports.api_log = () => {
-//    
-//}
