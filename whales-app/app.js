@@ -13,12 +13,19 @@ app.use(cors());
 const fecha_version = "AGO-2020";
 const version = "Whales - TP UADE - Grupo 4 - " + fecha_version;
 
-app.get('/version', function(req, res) {
+app.get('/version', (req, res) => {
     console.log("version requested: " + version);
     res.send(version);
 });
 
-app.listen(port, function(err, result) {
+app.get('/provincias', (req, res) => {
+    arrayDeCampos = ['id_provincia', 'nombre'];
+    //filtro = 'fecha_cotizacion LIKE "%" ORDER BY id_registro DESC LIMIT 1;';
+    config_db.select_a_base_de_datos(arrayDeCampos, 'provincias')
+        .then(resultado => res.send(resultado), err => console.log(err));
+});
+
+app.listen(port, (err, result) => {
     if (err) throw err;
     console.log('App escuchando en http://' + host + ':' + port);
 });
