@@ -1,6 +1,7 @@
 const config_db  = require('./config_db');
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const cors = require('cors');
 
 const app = express();
@@ -20,9 +21,40 @@ app.get('/version', (req, res) => {
 
 app.get('/provincias', (req, res) => {
     arrayDeCampos = ['id_provincia', 'nombre'];
-    //filtro = 'fecha_cotizacion LIKE "%" ORDER BY id_registro DESC LIMIT 1;';
     config_db.select_a_base_de_datos(arrayDeCampos, 'provincias')
         .then(resultado => res.send(resultado), err => console.log(err));
+});
+
+app.get('/provincias/:id_provincia', (req, res) => {
+    var get_usuario = parseInt(req.params.id_provincia);
+    if (Number.isInteger(get_usuario)) {
+        arrayDeCampos = ['id_provincia', 'nombre'];
+        filtro = 'id_provincia = ?';
+        config_db.select_a_base_de_datos(arrayDeCampos, 'provincias', filtro, get_usuario)
+            .then(resultado => res.send(resultado), err => console.log(err));
+    } else {
+        console.log("ERROR: id_provincia tiene que ser un entero.");
+        res.send("ERROR: id_provincia tiene que ser un entero.");
+    }
+});
+
+app.get('/marcas', (req, res) => {
+    arrayDeCampos = ['id_marca', 'nombre'];
+    config_db.select_a_base_de_datos(arrayDeCampos, 'marcas')
+        .then(resultado => res.send(resultado), err => console.log(err));
+});
+
+app.get('/marcas/:id_marca', (req, res) => {
+    var get_usuario = parseInt(req.params.id_marca);
+    if (Number.isInteger(get_usuario)) {
+        arrayDeCampos = ['id_marca', 'nombre'];
+        filtro = 'id_marca = ?';
+        config_db.select_a_base_de_datos(arrayDeCampos, 'marcas', filtro, get_usuario)
+            .then(resultado => res.send(resultado), err => console.log(err));
+    } else {
+        console.log("ERROR: id_marca tiene que ser un entero.");
+        res.send("ERROR: id_marca tiene que ser un entero.");
+    }
 });
 
 app.listen(port, (err, result) => {
