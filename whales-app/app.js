@@ -20,17 +20,16 @@ app.get('/version', (req, res) => {
 });
 
 app.get('/provincias', (req, res) => {
-    arrayDeCampos = ['id_provincia', 'nombre'];
-    config_db.select_a_base_de_datos(arrayDeCampos, 'provincias')
+    var query = "SELECT id_provincia, nombre FROM provincias;";
+    config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
 });
 
 app.get('/provincias/:id_provincia', (req, res) => {
     var get_usuario = parseInt(req.params.id_provincia);
     if (Number.isInteger(get_usuario)) {
-        arrayDeCampos = ['id_provincia', 'nombre'];
-        filtro = 'id_provincia = ?';
-        config_db.select_a_base_de_datos(arrayDeCampos, 'provincias', filtro, get_usuario)
+        var query = "SELECT id_provincia, nombre FROM provincias WHERE id_provincia = ?";
+        config_db.select_a_base_de_datos(query , get_usuario)
             .then(resultado => res.send(resultado), err => console.log(err));
     } else {
         console.log("ERROR: id_provincia tiene que ser un entero.");
@@ -39,21 +38,44 @@ app.get('/provincias/:id_provincia', (req, res) => {
 });
 
 app.get('/marcas', (req, res) => {
-    arrayDeCampos = ['id_marca', 'nombre'];
-    config_db.select_a_base_de_datos(arrayDeCampos, 'marcas')
+    var query = "SELECT id_marca, nombre FROM marcas;";
+    config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
 });
 
 app.get('/marcas/:id_marca', (req, res) => {
     var get_usuario = parseInt(req.params.id_marca);
     if (Number.isInteger(get_usuario)) {
-        arrayDeCampos = ['id_marca', 'nombre'];
-        filtro = 'id_marca = ?';
-        config_db.select_a_base_de_datos(arrayDeCampos, 'marcas', filtro, get_usuario)
+        var query = "SELECT id_marca, nombre FROM marcas WHERE id_marca = ?";
+        config_db.select_a_base_de_datos(query, get_usuario)
             .then(resultado => res.send(resultado), err => console.log(err));
     } else {
         console.log("ERROR: id_marca tiene que ser un entero.");
         res.send("ERROR: id_marca tiene que ser un entero.");
+    }
+});
+
+app.get('/productos', (req, res) => {
+    var query = "SELECT id_producto, m.nombre AS 'marca', p.nombre AS 'nombre', \
+                precio, c.nombre AS 'categoria', descripcion \
+                FROM productos p JOIN marcas m ON p.id_marca = m.id_marca \
+                JOIN categorias c ON p.id_categoria = c.id_categoria;";
+    config_db.select_a_base_de_datos(query)
+        .then(resultado => res.send(resultado), err => console.log(err));
+});
+
+app.get('/productos/:id_producto', (req, res) => {
+    var get_usuario = parseInt(req.params.id_producto);
+    if (Number.isInteger(get_usuario)) {
+        var query = "SELECT id_producto, m.nombre AS 'marca', p.nombre AS 'nombre', \
+        precio, c.nombre AS 'categoria', descripcion \
+        FROM productos p JOIN marcas m ON p.id_marca = m.id_marca \
+        JOIN categorias c ON p.id_categoria = c.id_categoria WHERE id_producto = ?";
+        config_db.select_a_base_de_datos(query, get_usuario)
+            .then(resultado => res.send(resultado), err => console.log(err));
+    } else {
+        console.log("ERROR: id_producto tiene que ser un entero.");
+        res.send("ERROR: id_producto tiene que ser un entero.");
     }
 });
 
