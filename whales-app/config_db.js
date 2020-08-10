@@ -61,10 +61,8 @@ module.exports.conectar_a_base_de_datos = (nombre_de_base_de_datos) => {
 
 function rawDataPacket_a_array (resultado, nombre_de_campo) {
     array_de_elementos = [];
-    //console.log(resultado);
     for ( var indice in resultado ) {
         array_de_elementos.push(resultado[indice][nombre_de_campo]);
-        //console.log(JSON.parse(JSON.stringify(resultado[indice][nombre_de_campo])));
     };
     return array_de_elementos;
 }

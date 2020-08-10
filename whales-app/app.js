@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const cors = require('cors');
+const { join } = require('path');
+const { config } = require('process');
 
 const app = express();
 const host = "localhost";   // URL de la APP
@@ -78,6 +80,41 @@ app.get('/productos/:id_producto', (req, res) => {
         res.send("ERROR: id_producto tiene que ser un entero.");
     }
 });
+
+app.post('/productos', (req, res) => {
+    var i = 0;
+    console.log(req.body);
+    // chequeo si existe la marca en la tabla marcas y busco su id_marca (si no existe, tira error)
+    var query1 = "SELECT id_marca, nombre FROM marcas WHERE nombre = '" + req.body.marca + "'";
+    var query2 = "SELECT id_categoria, nombre FROM categorias WHERE nombre = '" + req.body.categoria + "'";
+    config_db.select_a_base_de_datos(query1)
+        .then(resultado => {
+            if (resultado[0].nombre === req.body.marca) { id_marca = resultado[0].id_marca; i++; };
+        }, err => console.log(err))
+        .then(resultado => config_db.select_a_base_de_datos(query2), err => console.log(err))
+            .then(resultado => {
+                if (resultado[0].nombre === req.body.categoria) { id_categoria = resultado[0].id_categoria; i++; };
+            }, err => console.log(err))
+            .then(resultado => {
+                if (i === 0) {
+                    var msg = "ERROR: la marca no existe, debe añadirla primero";
+                    console.log(msg);
+                    res.send(msg);
+                } else if (i === 1) {
+                    var msg = "ERROR: la categoria no existe, debe añadirla primero";
+                    console.log(msg);
+                    res.send(msg);
+                } else if (i === 2) {
+                    var msg = "OK: registro ingresado correctamente.";
+                    var query = "INSERT INTO productos (nombre, id_categoria, id_marca, precio, descripcion) VALUES ('" + req.body.nombre + "','" + id_categoria + "','" + id_marca + "','" + req.body.precio + "','" + req.body.descripcion + "');"
+                    console.log(query);
+                    config_db.select_a_base_de_datos(query);
+                    console.log(msg);
+                    res.send(msg);
+                }
+            }, err => console.log(err));
+});
+
 
 app.listen(port, (err, result) => {
     if (err) throw err;
