@@ -25,12 +25,14 @@ app.get('/version', (req, res) => {
 // PROVINCIAS
 //
 
+// GET /provincias
 app.get('/provincias', (req, res) => {
     var query = "SELECT id_provincia, nombre FROM provincias;";
     config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
 });
 
+// GET /provincias/:id_provincia
 app.get('/provincias/:id_provincia', (req, res) => {
     var get_usuario = parseInt(req.params.id_provincia);
     if (Number.isInteger(get_usuario)) {
@@ -47,12 +49,14 @@ app.get('/provincias/:id_provincia', (req, res) => {
 // MARCAS
 //
 
+// GET /marcas
 app.get('/marcas', (req, res) => {
     var query = "SELECT id_marca, nombre FROM marcas;";
     config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
 });
 
+// GET /marcas/:id_marca
 app.get('/marcas/:id_marca', (req, res) => {
     var get_usuario = parseInt(req.params.id_marca);
     if (Number.isInteger(get_usuario)) {
@@ -69,6 +73,7 @@ app.get('/marcas/:id_marca', (req, res) => {
 // PRODUCTOS
 //
 
+// GET /productos
 app.get('/productos', (req, res) => {
     var query = "SELECT id_producto, m.nombre AS 'marca', p.nombre AS 'nombre', \
                 precio, c.nombre AS 'categoria', descripcion \
@@ -78,6 +83,7 @@ app.get('/productos', (req, res) => {
         .then(resultado => res.send(resultado), err => console.log(err));
 });
 
+// GET /productos/:id_producto
 app.get('/productos/:id_producto', (req, res) => {
     var get_usuario = parseInt(req.params.id_producto);
     if (Number.isInteger(get_usuario)) {
@@ -93,6 +99,7 @@ app.get('/productos/:id_producto', (req, res) => {
     }
 });
 
+// POST /productos
 app.post('/productos', (req, res) => {
     var i = 0;
     console.log(req.body);
@@ -109,20 +116,21 @@ app.post('/productos', (req, res) => {
             }, err => console.log(err))
             .then(resultado => {
                 if (i === 0) {
-                    var msg = "ERROR: la marca no existe, debe añadirla primero";
+                    var msg = "ERROR: [ msg: la marca no existe, debe añadirla primero ]";
                     console.log(msg);
                     res.send(msg);
                 } else if (i === 1) {
-                    var msg = "ERROR: la categoria no existe, debe añadirla primero";
+                    var msg = "ERROR: [ msg: la categoria no existe, debe añadirla primero ]";
                     console.log(msg);
                     res.send(msg);
                 } else if (i === 2) {
-                    var msg = "OK: registro ingresado correctamente.";
                     var query = "INSERT INTO productos (nombre, id_categoria, id_marca, precio, descripcion) VALUES ('" + req.body.nombre + "','" + id_categoria + "','" + id_marca + "','" + req.body.precio + "','" + req.body.descripcion + "');"
                     console.log(query);
-                    config_db.select_a_base_de_datos(query);
-                    console.log(msg);
-                    res.send(msg);
+                    config_db.select_a_base_de_datos(query).then(resultado => {
+                        var msg = "OK: [ msg: producto ingresado correctamente, affectedRows: " + resultado.affectedRows + ", insertId: " + resultado.insertId + " ]";
+                        console.log(msg);
+                        res.send(msg);
+                    }, err => console.log(err))
                 }
             }, err => console.log(err));
 });
@@ -131,6 +139,7 @@ app.post('/productos', (req, res) => {
 // USUARIOS
 //
 
+// GET /usuarios
 app.get('/usuarios', (req, res) => {
     var query = "SELECT id_usuario, u.nombre, apellido, email, dni, \
                 ciudad, direccion, estado AS permiso, p.nombre AS 'provincia', \
@@ -140,6 +149,7 @@ app.get('/usuarios', (req, res) => {
         .then(resultado => res.send(resultado), err => console.log(err));
 });
 
+// GET /usuarios/:id_usuarios
 app.get('/usuarios/:id_usuario', (req, res) => {
     var get_usuario = parseInt(req.params.id_usuario);
     if (Number.isInteger(get_usuario)) {
@@ -155,6 +165,7 @@ app.get('/usuarios/:id_usuario', (req, res) => {
     }
 });
 
+// POST /usuarios
 app.post('/usuarios', (req, res) => {
     var i = 0;
     console.log(req.body);
@@ -171,24 +182,26 @@ app.post('/usuarios', (req, res) => {
             }, err => console.log(err))
             .then(resultado => {
                 if (i === 0) {
-                    var msg = "ERROR: el estado del usuario no existe.";
+                    var msg = "ERROR: [ msg: el estado del usuario no existe ]";
                     console.log(msg);
                     res.send(msg);
                 } else if (i === 1) {
-                    var msg = "ERROR: la provincia no existe, verifique el nombre.";
+                    var msg = "ERROR: [ msg: la provincia no existe, verifique el nombre ]";
                     console.log(msg);
                     res.send(msg);
                 } else if (i === 2) {
-                    var msg = "OK: registro ingresado correctamente.";
                     var query = "INSERT INTO usuarios (apellido, ciudad, direccion, dni, email, id_estado, id_provincia, nombre, pass, telefono) VALUES ('" + req.body.apellido + "','" + req.body.ciudad + "','" + req.body.direccion + "','" + req.body.dni + "','" + req.body.email + "','" + id_estado + "','" + id_provincia + "','" + req.body.nombre + "','" + req.body.pass + "','" + req.body.telefono + "');";
                     console.log(query);
-                    config_db.select_a_base_de_datos(query);
-                    console.log(msg);
-                    res.send(msg);
+                    config_db.select_a_base_de_datos(query).then(resultado => {
+                        var msg = "OK: [ msg: usuario ingresado correctamente, affectedRows: " + resultado.affectedRows + ", insertId: " + resultado.insertId + " ]";
+                        console.log(msg);
+                        res.send(msg);
+                    }, err => console.log(err));
                 }
             }, err => console.log(err));
 });
 
+// ESCUCHA DE IP Y PUERTO
 app.listen(port, (err, result) => {
     if (err) throw err;
     console.log('App escuchando en http://' + host + ':' + port);
@@ -196,6 +209,7 @@ app.listen(port, (err, result) => {
 
 inicio();
 
+// CONEXION A BASE DE DATOS
 function inicio() {
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
