@@ -48,6 +48,15 @@ app.get('/provincias/:id_provincia', (req, res) => {
     }
 });
 
+// DELETE /provincias/:id_provincia
+app.delete('/provincias/:id_provincia', (req, res) => {
+    var del_usuario = parseInt(req.params.id_provincia);
+    var query = "DELETE FROM provincias WHERE id_provincia = ?;"
+    console.log(query);
+    config_db.select_a_base_de_datos(query, del_usuario)
+        .then(resultado => res.send(resultado), err => console.log(err));
+});
+
 //
 // MARCAS
 //
@@ -73,6 +82,15 @@ app.get('/marcas/:id_marca', (req, res) => {
         console.log(msg);
         res.send(msg);
     }
+});
+
+// DELETE /marcas/:id_marca
+app.delete('/marcas/:id_marca', (req, res) => {
+    var del_usuario = parseInt(req.params.id_marca);
+    var query = "DELETE FROM marcas WHERE id_marca = ?;"
+    console.log(query);
+    config_db.select_a_base_de_datos(query, del_usuario)
+        .then(resultado => res.send(resultado), err => console.log(err));
 });
 
 //
@@ -190,6 +208,15 @@ app.put('/productos/:id_producto', (req, res) => {
             }, err => console.log(err));
 });
 
+// DELETE /productos/:id_producto
+app.delete('/productos/:id_producto', (req, res) => {
+    var del_usuario = parseInt(req.params.id_producto);
+    var query = "DELETE FROM productos WHERE id_producto = ?;"
+    console.log(query);
+    config_db.select_a_base_de_datos(query, del_usuario)
+        .then(resultado => res.send(resultado), err => console.log(err));
+});
+
 //
 // USUARIOS
 //
@@ -305,6 +332,15 @@ app.put('/usuarios/:id_usuario', (req, res) => {
                     }, err => console.log(err));
                 }
             }, err => console.log(err));
+});
+
+// DELETE /usuarios/:id_usuario
+app.delete('/usuarios/:id_usuario', (req, res) => {
+    var del_usuario = parseInt(req.params.id_usuario);
+    var query = "DELETE FROM usuarios WHERE id_usuario = ?;"
+    console.log(query);
+    config_db.select_a_base_de_datos(query, del_usuario)
+        .then(resultado => res.send(resultado), err => console.log(err));
 });
 
 // ESCUCHA DE IP Y PUERTO
