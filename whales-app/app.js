@@ -22,23 +22,28 @@ app.get('/version', (req, res) => {
 });
 
 //
-// PROVINCIAS
+// CATEGORIAS
 //
 
-// GET /provincias
-app.get('/provincias', (req, res) => {
-    var query = "SELECT id_provincia, nombre FROM provincias ORDER BY id_provincia;";
-    console.log(query);
+// GET /categorias
+app.get('/categorias', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
+    var query = "SELECT id_categoria, nombre FROM categorias ORDER BY id_categoria;";
+    console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
 });
 
-// GET /provincias/:id_provincia
-app.get('/provincias/:id_provincia', (req, res) => {
+// GET /categorias/:id_categoria
+app.get('/categorias/:id_categoria', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var get_usuario = parseInt(req.params.id_provincia);
     if (Number.isInteger(get_usuario)) {
-        var query = "SELECT id_provincia, nombre FROM provincias WHERE id_provincia = ?";
-        console.log(query);
+        var query = "SELECT id_categoria, nombre FROM categorias WHERE id_categoria = ?";
+        console.log("QUERY: [ " + query + " ], VARIABLES: [ " + get_usuario + " ]");
         config_db.select_a_base_de_datos(query , get_usuario)
             .then(resultado => res.send(resultado), err => console.log(err));
     } else {
@@ -46,15 +51,52 @@ app.get('/provincias/:id_provincia', (req, res) => {
         console.log(msg);
         res.send(msg);
     }
+    config_db.desconectar_db();
+});
+
+//
+// PROVINCIAS
+//
+
+// GET /provincias
+app.get('/provincias', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
+    var query = "SELECT id_provincia, nombre FROM provincias ORDER BY id_provincia;";
+    console.log("QUERY: [ " + query + " ]");
+    config_db.select_a_base_de_datos(query)
+        .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
+});
+
+// GET /provincias/:id_provincia
+app.get('/provincias/:id_provincia', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
+    var get_usuario = parseInt(req.params.id_provincia);
+    if (Number.isInteger(get_usuario)) {
+        var query = "SELECT id_provincia, nombre FROM provincias WHERE id_provincia = ?";
+        console.log("QUERY: [ " + query + " ], VARIABLES: [ " + get_usuario + " ]");
+        config_db.select_a_base_de_datos(query , get_usuario)
+            .then(resultado => res.send(resultado), err => console.log(err));
+    } else {
+        var msg = "ERROR: [ msg: id_provincia tiene que ser un entero ]";
+        console.log(msg);
+        res.send(msg);
+    }
+    config_db.desconectar_db();
 });
 
 // DELETE /provincias/:id_provincia
 app.delete('/provincias/:id_provincia', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var del_usuario = parseInt(req.params.id_provincia);
     var query = "DELETE FROM provincias WHERE id_provincia = ?;"
-    console.log(query);
+    console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query, del_usuario)
         .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
 });
 
 //
@@ -63,18 +105,23 @@ app.delete('/provincias/:id_provincia', (req, res) => {
 
 // GET /marcas
 app.get('/marcas', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var query = "SELECT id_marca, nombre FROM marcas ORDER BY id_marca;";
-    console.log(query);
+    console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
 });
 
 // GET /marcas/:id_marca
 app.get('/marcas/:id_marca', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var get_usuario = parseInt(req.params.id_marca);
     if (Number.isInteger(get_usuario)) {
         var query = "SELECT id_marca, nombre FROM marcas WHERE id_marca = ?";
-        console.log(query);
+        console.log("QUERY: [ " + query + " ]");
         config_db.select_a_base_de_datos(query, get_usuario)
             .then(resultado => res.send(resultado), err => console.log(err));
     } else {
@@ -82,15 +129,19 @@ app.get('/marcas/:id_marca', (req, res) => {
         console.log(msg);
         res.send(msg);
     }
+    config_db.desconectar_db();
 });
 
 // DELETE /marcas/:id_marca
 app.delete('/marcas/:id_marca', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var del_usuario = parseInt(req.params.id_marca);
     var query = "DELETE FROM marcas WHERE id_marca = ?;"
-    console.log(query);
+    console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query, del_usuario)
         .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
 });
 
 //
@@ -99,18 +150,23 @@ app.delete('/marcas/:id_marca', (req, res) => {
 
 // GET /productos
 app.get('/productos', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var query = 
 "SELECT id_producto, m.nombre AS 'marca', p.nombre AS 'nombre', \
 precio, c.nombre AS 'categoria', descripcion \
 FROM productos p JOIN marcas m ON p.id_marca = m.id_marca \
 JOIN categorias c ON p.id_categoria = c.id_categoria ORDER BY id_producto;";
-    console.log(query);
+    console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
 });
 
 // GET /productos/:id_producto
 app.get('/productos/:id_producto', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var get_usuario = parseInt(req.params.id_producto);
     if (Number.isInteger(get_usuario)) {
         var query = 
@@ -118,103 +174,66 @@ app.get('/productos/:id_producto', (req, res) => {
 precio, c.nombre AS 'categoria', descripcion \
 FROM productos p JOIN marcas m ON p.id_marca = m.id_marca \
 JOIN categorias c ON p.id_categoria = c.id_categoria WHERE id_producto = ?";
-        console.log(query);
+        console.log("QUERY: [ " + query + " ], VARIABLES: [ " + get_usuario + " ]");
         config_db.select_a_base_de_datos(query, get_usuario)
             .then(resultado => res.send(resultado), err => console.log(err));
     } else {
         console.log("ERROR: id_producto tiene que ser un entero.");
         res.send("ERROR: id_producto tiene que ser un entero.");
     }
+    config_db.desconectar_db();
 });
 
 // POST /productos
 app.post('/productos', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var i = 0;
     console.log("BODY: [ " + req.body + " ]");
-    // chequeo si existe la marca en la tabla marcas y busco su id_marca (si no existe, tira error), lo mismo con la categoria
-    var query1 = "SELECT id_marca, nombre FROM marcas WHERE nombre = '" + req.body.marca + "'";
-    var query2 = "SELECT id_categoria, nombre FROM categorias WHERE nombre = '" + req.body.categoria + "'";
-    config_db.select_a_base_de_datos(query1)
-        .then(resultado => {
-            if (resultado[0].nombre === req.body.marca) { id_marca = resultado[0].id_marca; i++; };
-        }, err => console.log(err))
-        .then(resultado => config_db.select_a_base_de_datos(query2), err => console.log(err))
-            .then(resultado => {
-                if (resultado[0].nombre === req.body.categoria) { id_categoria = resultado[0].id_categoria; i++; };
-            }, err => console.log(err))
-            .then(resultado => {
-                if (i === 0) {
-                    var msg = "ERROR: [ msg: la marca no existe, debe añadirla primero ]";
-                    console.log(msg);
-                    res.send(msg);
-                } else if (i === 1) {
-                    var msg = "ERROR: [ msg: la categoria no existe, debe añadirla primero ]";
-                    console.log(msg);
-                    res.send(msg);
-                } else if (i === 2) {
-                    var query = 
-"INSERT INTO productos (nombre, id_categoria, id_marca, precio, descripcion) VALUES ('\
-" + req.body.nombre + "','" + id_categoria + "','" + id_marca + "','" + req.body.precio + "','\
-" + req.body.descripcion + "');"
-                    console.log(query);
-                    config_db.select_a_base_de_datos(query).then(resultado => {
-                        var msg = 
+    var post_usuario = [ req.body.nombre, req.body.id_categoria, req.body.id_marca, req.body.precio, req.body.descripcion ];
+    var query = "INSERT INTO productos (nombre, id_categoria, id_marca, precio, descripcion) VALUES (?, ?, ?, ?, ?);";
+    console.log("QUERY: [ " + query + " ], VARIABLES: [ " + post_usuario + " ]");
+    config_db.select_a_base_de_datos(query, post_usuario)
+        .then(resultado => { var msg = 
 "OK: [ msg: producto ingresado correctamente, affectedRows: \
 " + resultado.affectedRows + ", insertId: " + resultado.insertId + " ]";
-                        console.log(msg);
-                        res.send(msg);
-                    }, err => console.log(err))
-                }
-            }, err => console.log(err));
+        console.log(msg);
+        res.send(msg);
+        }, err => console.log(err))
+    config_db.desconectar_db();
 });
 
 // PUT /productos/:id_producto
 app.put('/productos/:id_producto', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var i = 0;
-    // chequeo si existe la marca en la tabla marcas y busco su id_marca (si no existe, tira error), lo mismo con la categoria
-    var put_usuario = parseInt(req.params.id_producto);
-    var query1 = "SELECT id_marca, nombre FROM marcas WHERE nombre = '" + req.body.marca + "'";
-    var query2 = "SELECT id_categoria, nombre FROM categorias WHERE nombre = '" + req.body.categoria + "'";
-    config_db.select_a_base_de_datos(query1)
+    var put_usuario = [ req.body.descripcion, req.body.id_categoria, req.body.id_marca, req.body.nombre, req.body.precio, req.params.id_producto ];
+    var query = 
+"UPDATE productos SET descripcion = ?, id_categoria = ?, id_marca = ?, nombre = ?, precio = ? WHERE id_producto = ?;";
+    console.log("QUERY: [ " + query + " ], VARIABLES: [ " + put_usuario + " ]");
+    config_db.select_a_base_de_datos(query, put_usuario)
         .then(resultado => {
-            if (resultado[0].nombre === req.body.marca) { id_marca = resultado[0].id_marca; i++; };
-        }, err => console.log(err))
-        .then(resultado => config_db.select_a_base_de_datos(query2), err => console.log(err))
-            .then(resultado => {
-                if (resultado[0].nombre === req.body.categoria) { id_categoria = resultado[0].id_categoria; i++; };
-            }, err => console.log(err))
-            .then(resultado => {
-                if (i === 0) {
-                    var msg = "ERROR: [ msg: la marca no existe, debe añadirla primero ]";
-                    console.log(msg);
-                    res.send(msg);
-                } else if (i === 1) {
-                    var msg = "ERROR: [ msg: la categoria no existe, debe añadirla primero ]";
-                    console.log(msg);
-                    res.send(msg);
-                } else if (i === 2) {
-                    var query = 
-"UPDATE productos SET descripcion = '" + req.body.descripcion + "', id_categoria = '" + id_categoria + "\
-', id_marca = '" + id_marca + "', nombre = '" + req.body.nombre + "', precio = " + req.body.precio + " WHERE id_producto = ?;";
-                    console.log(query);
-                    config_db.select_a_base_de_datos(query, put_usuario).then(resultado => {
-                        var msg = 
+            var msg = 
 "OK: [ msg: producto modificado correctamente, affectedRows: \
 " + resultado.affectedRows + ", message: " + resultado.message + " ]";
-                        console.log(msg);
-                        res.send(msg);
-                    }, err => console.log(err))
-                }
-            }, err => console.log(err));
+            console.log(msg);
+            res.send(msg);
+            }, err => console.log(err))
+    config_db.desconectar_db();
 });
+
 
 // DELETE /productos/:id_producto
 app.delete('/productos/:id_producto', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var del_usuario = parseInt(req.params.id_producto);
     var query = "DELETE FROM productos WHERE id_producto = ?;"
-    console.log(query);
+    console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query, del_usuario)
         .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
 });
 
 //
@@ -223,18 +242,22 @@ app.delete('/productos/:id_producto', (req, res) => {
 
 // GET /usuarios
 app.get('/usuarios', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var query = 
 "SELECT id_usuario, u.nombre, apellido, email, dni, \
 ciudad, direccion, estado, p.nombre AS 'provincia', \
 pass, telefono FROM usuarios u JOIN estados e ON u.id_estado = e.id_estado \
 JOIN provincias p ON u.id_provincia = p.id_provincia ORDER BY id_usuario;";
-    console.log(query);
+    console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
 });
 
 // GET /usuarios/:id_usuarios
 app.get('/usuarios/:id_usuario', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var get_usuario = parseInt(req.params.id_usuario);
     if (Number.isInteger(get_usuario)) {
         var query = 
@@ -242,7 +265,7 @@ app.get('/usuarios/:id_usuario', (req, res) => {
 ciudad, direccion, estado, p.nombre AS 'provincia', pass, telefono \
 FROM usuarios u JOIN estados e ON u.id_estado = e.id_estado \
 JOIN provincias p ON u.id_provincia = p.id_provincia WHERE id_usuario = ?";
-        console.log(query);
+        console.log("QUERY: [ " + query + " ], VARIABLES: [ " + get_usuario + " ]");
         config_db.select_a_base_de_datos(query, get_usuario)
             .then(resultado => res.send(resultado), err => console.log(err));
     } else {
@@ -250,97 +273,64 @@ JOIN provincias p ON u.id_provincia = p.id_provincia WHERE id_usuario = ?";
         console.log(msg);
         res.send(msg);
     }
+    config_db.desconectar_db();
 });
 
 // POST /usuarios
 app.post('/usuarios', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var i = 0;
-    // chequeo si existe el estado en la tabla estados y busco su id_estado (si no existe, tira error), lo mismo con la provincia
-    var query1 = "SELECT id_estado, estado FROM estados WHERE estado = '" + req.body.estado + "'";
-    var query2 = "SELECT id_provincia, nombre FROM provincias WHERE nombre = '" + req.body.provincia + "'";
-    config_db.select_a_base_de_datos(query1)
-        .then(resultado => {
-            if (resultado[0].estado === req.body.estado) { id_estado = resultado[0].id_estado; i++; };
-        }, err => console.log(err))
-        .then(resultado => config_db.select_a_base_de_datos(query2), err => console.log(err))
-            .then(resultado => {
-                if (resultado[0].nombre === req.body.provincia) { id_provincia = resultado[0].id_provincia; i++; };
-            }, err => console.log(err))
-            .then(resultado => {
-                if (i === 0) {
-                    var msg = "ERROR: [ msg: el estado del usuario no existe ]";
-                    console.log(msg);
-                    res.send(msg);
-                } else if (i === 1) {
-                    var msg = "ERROR: [ msg: la provincia no existe, verifique el nombre ]";
-                    console.log(msg);
-                    res.send(msg);
-                } else if (i === 2) {
-                    var query = 
+    var post_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
+                         req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
+                         req.body.pass, req.body.telefono ];
+    var query = 
 "INSERT INTO usuarios (apellido, ciudad, direccion, dni, email, id_estado, \
-id_provincia, nombre, pass, telefono) VALUES ('" + req.body.apellido + "','" + req.body.ciudad + "','\
-" + req.body.direccion + "','" + req.body.dni + "','" + req.body.email + "','" + id_estado + "','\
-" + id_provincia + "','" + req.body.nombre + "','" + req.body.pass + "','" + req.body.telefono + "');";
-                    console.log(query);
-                    config_db.select_a_base_de_datos(query).then(resultado => {
-                        var msg = 
+id_provincia, nombre, pass, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    console.log("QUERY: [ " + query + " ], VARIABLES: [ " + post_usuario + " ]");
+    config_db.select_a_base_de_datos(query, post_usuario)
+        .then(resultado => {
+            var msg = 
 "OK: [ msg: usuario ingresado correctamente, affectedRows: " + resultado.affectedRows + ", insertId: " + resultado.insertId + " ]";
-                        console.log(msg);
-                        res.send(msg);
-                    }, err => console.log(err));
-                }
+            console.log(msg);
+            res.send(msg);
             }, err => console.log(err));
+    config_db.desconectar_db();
 });
 
 // PUT /usuarios/:id_usuario
 app.put('/usuarios/:id_usuario', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var i = 0;
-    // chequeo si existe el estado en la tabla estados y busco su id_estado (si no existe, tira error), lo mismo con la provincia
-    var put_usuario = parseInt(req.params.id_usuario);
-    var query1 = "SELECT id_estado, estado FROM estados WHERE estado = '" + req.body.estado + "'";
-    var query2 = "SELECT id_provincia, nombre FROM provincias WHERE nombre = '" + req.body.provincia + "'";
-    config_db.select_a_base_de_datos(query1)
+    var put_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
+                         req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
+                         req.body.pass, req.body.telefono, req.params.id_usuario ];
+    var query = 
+"UPDATE usuarios SET apellido = ?, ciudad = ?, direccion = ?, dni = ?, email = ?, \
+id_estado = ?, id_provincia = ?, nombre = ?, pass = ?, telefono = ? WHERE id_usuario = ?;";
+    console.log("QUERY: [ " + query + " ], VARIABLES: [ " + put_usuario + " ]");
+    config_db.select_a_base_de_datos(query, put_usuario)
         .then(resultado => {
-            if (resultado[0].estado === req.body.estado) { id_estado = resultado[0].id_estado; i++; };
-        }, err => console.log(err))
-        .then(resultado => config_db.select_a_base_de_datos(query2), err => console.log(err))
-            .then(resultado => {
-                if (resultado[0].nombre === req.body.provincia) { id_provincia = resultado[0].id_provincia; i++; };
-            }, err => console.log(err))
-            .then(resultado => {
-                if (i === 0) {
-                    var msg = "ERROR: [ msg: el estado del usuario no existe ]";
-                    console.log(msg);
-                    res.send(msg);
-                } else if (i === 1) {
-                    var msg = "ERROR: [ msg: la provincia no existe, verifique el nombre ]";
-                    console.log(msg);
-                    res.send(msg);
-                } else if (i === 2) {
-                    var query = 
-"UPDATE usuarios SET apellido = '" + req.body.apellido + "', ciudad = '" + req.body.ciudad + "\
-', direccion = '" + req.body.direccion + "', dni = '" + req.body.dni + "', email = '\
-" + req.body.email + "', id_estado = " + id_estado + ", id_provincia = " + id_provincia + ", nombre = '\
-" + req.body.nombre + "', pass = '" + req.body.pass + "', telefono = '" + req.body.telefono + "' WHERE id_usuario = ?;"; 
-                    console.log(query);
-                    config_db.select_a_base_de_datos(query, put_usuario).then(resultado => {
-                        var msg = 
+            var msg = 
 "OK: [ msg: producto modificado correctamente, affectedRows: " + resultado.affectedRows + "\
 , message: " + resultado.message + " ]";
-                        console.log(msg);
-                        res.send(msg);
-                    }, err => console.log(err));
-                }
+            console.log(msg);
+            res.send(msg);
             }, err => console.log(err));
+    config_db.desconectar_db();
 });
 
 // DELETE /usuarios/:id_usuario
 app.delete('/usuarios/:id_usuario', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
     var del_usuario = parseInt(req.params.id_usuario);
     var query = "DELETE FROM usuarios WHERE id_usuario = ?;"
     console.log(query);
     config_db.select_a_base_de_datos(query, del_usuario)
         .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
 });
 
 // ESCUCHA DE IP Y PUERTO
@@ -353,8 +343,6 @@ inicio();
 
 // CONEXION A BASE DE DATOS
 function inicio() {
-    config_db.conectar_a_mysql();
-    config_db.conectar_a_base_de_datos('trabajo_final01');
     var fecha = config_db.format_date();
     console.log('Inicio de aplicación. - ' + fecha);
 }
