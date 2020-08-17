@@ -1,0 +1,78 @@
+body {
+    background: url(../img/wp-login.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+.seccion-principal {
+    /* CENTRADO DE LA CAJA DE LOGUEO Y RESPONSIVE */
+    margin: 0 auto;
+    margin-top: 25%;
+    padding: 0;
+}
+
+.modal-content {
+    background-color: #3b4642;
+    opacity: .85;
+    /* padding arriba-abajo=0, izq-der=20px */
+    padding: 0 20px;
+    box-shadow: 0px 0px 5px #848484;
+}
+
+.modal-content img {
+    box-shadow: 0px 0px 5px #848484;
+    border-radius: 50%;
+}
+
+.img-usuario {
+    margin-top: -50px;
+    margin-bottom: 35px;
+}
+
+.img-usuario img {
+    width: 70%;
+    height: 70%;
+}
+
+.form-group input {
+    height: 42px;
+    font-size: 18px;
+    border: 0;
+    padding-left: 54px;
+    border-radius: 5px;
+}
+
+.form-group::before {
+    /* esto es posible porque en el html pongo el script y el rel de font awesome */
+    font-family: "Font Awesome\ 5 Free";
+    position: absolute;
+    left: 28px;
+    font-size: 22px;
+    padding-top: 4px;
+}
+
+.form-group#usuario-group::before {
+    /* ver documentacion de font awesome
+       https://fontawesome.com/icons/user?style=solid
+    */
+    content: "\f007";
+}
+
+.form-group#contrasena-group::before {
+    /* ver documentacion de font awesome
+       https://fontawesome.com/icons/lock?style=solid
+    */
+    content: "\f023";
+}
+
+button {
+    width: 60%;
+    margin: 5px 0 25px;
+}
+
+.olvido {
+    padding: 5px 0;
+}
+
+.olvido a {
+    color: white;
+}
