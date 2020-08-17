@@ -17,7 +17,7 @@ const fecha_version = "AGO-2020";
 const version = "Whales - TP UADE - Grupo 4 - " + fecha_version;
 
 app.get('/version', (req, res) => {
-    console.log("version requested: " + version);
+    console.log("version: " + version);
     res.send(version);
 });
 
