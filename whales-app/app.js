@@ -154,10 +154,25 @@ app.get('/productos', (req, res) => {
     config_db.conectar_a_base_de_datos('trabajo_final01');
     var query = 
 "SELECT id_producto, m.nombre AS 'marca', p.nombre AS 'nombre', \
-precio, c.nombre AS 'categoria', descripcion \
+precio, c.nombre AS 'categoria', descripcion, hits_usuario, imagen \
 FROM productos p JOIN marcas m ON p.id_marca = m.id_marca \
 JOIN categorias c ON p.id_categoria = c.id_categoria ORDER BY id_producto;";
     console.log("QUERY: [ " + query + " ]");
+    config_db.select_a_base_de_datos(query)
+        .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
+});
+
+// GET /productos/hits
+app.get('/productos/hits', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
+    var query = 
+"SELECT id_producto, m.nombre AS 'marca', p.nombre AS 'nombre', \
+precio, c.nombre AS 'categoria', descripcion, hits_usuario, imagen \
+FROM productos p JOIN marcas m ON p.id_marca = m.id_marca \
+JOIN categorias c ON p.id_categoria = c.id_categoria ORDER BY hits_usuario DESC LIMIT 1000";
+    console.log("QUERY: [ " + query + " ] ");
     config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
     config_db.desconectar_db();
@@ -171,7 +186,7 @@ app.get('/productos/:id_producto', (req, res) => {
     if (Number.isInteger(get_usuario)) {
         var query = 
 "SELECT id_producto, m.nombre AS 'marca', p.nombre AS 'nombre', \
-precio, c.nombre AS 'categoria', descripcion \
+precio, c.nombre AS 'categoria', descripcion, hits_usuario, imagen \
 FROM productos p JOIN marcas m ON p.id_marca = m.id_marca \
 JOIN categorias c ON p.id_categoria = c.id_categoria WHERE id_producto = ?";
         console.log("QUERY: [ " + query + " ], VARIABLES: [ " + get_usuario + " ]");
@@ -185,13 +200,14 @@ JOIN categorias c ON p.id_categoria = c.id_categoria WHERE id_producto = ?";
 });
 
 // POST /productos
+// no permite modificar los hits_usuario para mantener integridad
 app.post('/productos', (req, res) => {
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
     var i = 0;
     console.log("BODY: [ " + req.body + " ]");
-    var post_usuario = [ req.body.nombre, req.body.id_categoria, req.body.id_marca, req.body.precio, req.body.descripcion ];
-    var query = "INSERT INTO productos (nombre, id_categoria, id_marca, precio, descripcion) VALUES (?, ?, ?, ?, ?);";
+    var post_usuario = [ req.body.nombre, req.body.id_categoria, req.body.id_marca, req.body.precio, req.body.descripcion, req.body.imagen ];
+    var query = "INSERT INTO productos (nombre, id_categoria, id_marca, precio, descripcion, imagen) VALUES (?, ?, ?, ?, ?, ?);";
     console.log("QUERY: [ " + query + " ], VARIABLES: [ " + post_usuario + " ]");
     config_db.select_a_base_de_datos(query, post_usuario)
         .then(resultado => { var msg = 
@@ -208,9 +224,9 @@ app.put('/productos/:id_producto', (req, res) => {
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
     var i = 0;
-    var put_usuario = [ req.body.descripcion, req.body.id_categoria, req.body.id_marca, req.body.nombre, req.body.precio, req.params.id_producto ];
+    var put_usuario = [ req.body.descripcion, req.body.id_categoria, req.body.id_marca, req.body.nombre, req.body.precio, req.body.imagen, req.params.id_producto ];
     var query = 
-"UPDATE productos SET descripcion = ?, id_categoria = ?, id_marca = ?, nombre = ?, precio = ? WHERE id_producto = ?;";
+"UPDATE productos SET descripcion = ?, id_categoria = ?, id_marca = ?, nombre = ?, precio = ?, imagen = ? WHERE id_producto = ?;";
     console.log("QUERY: [ " + query + " ], VARIABLES: [ " + put_usuario + " ]");
     config_db.select_a_base_de_datos(query, put_usuario)
         .then(resultado => {
@@ -223,6 +239,25 @@ app.put('/productos/:id_producto', (req, res) => {
     config_db.desconectar_db();
 });
 
+// PUT /productos/:id_producto/hits
+app.put('/productos/:id_producto/hits', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
+    var i = 0;
+    var put_usuario = [ req.body.hits_usuario, req.params.id_producto ];
+    var query = 
+"UPDATE productos SET hits_usuario = ? WHERE id_producto = ?;";
+    console.log("QUERY: [ " + query + " ], VARIABLES: [ " + put_usuario + " ]");
+    config_db.select_a_base_de_datos(query, put_usuario)
+        .then(resultado => {
+            var msg = 
+"OK: [ msg: producto modificado correctamente, affectedRows: \
+" + resultado.affectedRows + ", message: " + resultado.message + " ]";
+            console.log(msg);
+            res.send(msg);
+            }, err => console.log(err))
+    config_db.desconectar_db();
+});
 
 // DELETE /productos/:id_producto
 app.delete('/productos/:id_producto', (req, res) => {
@@ -247,7 +282,7 @@ app.get('/usuarios', (req, res) => {
     var query = 
 "SELECT id_usuario, u.nombre, apellido, email, dni, \
 ciudad, direccion, estado, p.nombre AS 'provincia', \
-pass, telefono FROM usuarios u JOIN estados e ON u.id_estado = e.id_estado \
+pass, telefono, imagen FROM usuarios u JOIN estados e ON u.id_estado = e.id_estado \
 JOIN provincias p ON u.id_provincia = p.id_provincia ORDER BY id_usuario;";
     console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query)
@@ -262,7 +297,7 @@ app.get('/usuarios/:id_usuario', (req, res) => {
     if (Number.isInteger(get_usuario)) {
         var query = 
 "SELECT id_usuario, u.nombre, apellido, email, dni, \
-ciudad, direccion, estado, p.nombre AS 'provincia', pass, telefono \
+ciudad, direccion, estado, p.nombre AS 'provincia', pass, telefono, imagen \
 FROM usuarios u JOIN estados e ON u.id_estado = e.id_estado \
 JOIN provincias p ON u.id_provincia = p.id_provincia WHERE id_usuario = ?";
         console.log("QUERY: [ " + query + " ], VARIABLES: [ " + get_usuario + " ]");
@@ -283,10 +318,10 @@ app.post('/usuarios', (req, res) => {
     var i = 0;
     var post_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
                          req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
-                         req.body.pass, req.body.telefono ];
+                         req.body.pass, req.body.telefono, req.body.imagen ];
     var query = 
 "INSERT INTO usuarios (apellido, ciudad, direccion, dni, email, id_estado, \
-id_provincia, nombre, pass, telefono) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+id_provincia, nombre, pass, telefono, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     console.log("QUERY: [ " + query + " ], VARIABLES: [ " + post_usuario + " ]");
     config_db.select_a_base_de_datos(query, post_usuario)
         .then(resultado => {
@@ -305,10 +340,10 @@ app.put('/usuarios/:id_usuario', (req, res) => {
     var i = 0;
     var put_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
                          req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
-                         req.body.pass, req.body.telefono, req.params.id_usuario ];
+                         req.body.pass, req.body.telefono, req.body.imagen, req.params.id_usuario ];
     var query = 
 "UPDATE usuarios SET apellido = ?, ciudad = ?, direccion = ?, dni = ?, email = ?, \
-id_estado = ?, id_provincia = ?, nombre = ?, pass = ?, telefono = ? WHERE id_usuario = ?;";
+id_estado = ?, id_provincia = ?, nombre = ?, pass = ?, telefono = ?, imagen = ? WHERE id_usuario = ?;";
     console.log("QUERY: [ " + query + " ], VARIABLES: [ " + put_usuario + " ]");
     config_db.select_a_base_de_datos(query, put_usuario)
         .then(resultado => {
