@@ -5,6 +5,8 @@ var host = "whales.matanga.net.ar";
 var port = 5000;
 var endpoint = 'http://' + host + ':' + port
 
+console.log(endpoint);
+
 // crea dropdown list de provincias
 $('#provincia-group').on('click', () => { 
 
