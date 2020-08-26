@@ -145,6 +145,21 @@ app.delete('/marcas/:id_marca', (req, res) => {
 });
 
 //
+// ESTADOS
+//
+
+// GET /estados
+app.get('/estados', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
+    var query = "SELECT id_estado, perfil FROM estados";
+    console.log("QUERY: [ " + query + " ]");
+    config_db.select_a_base_de_datos(query)
+        .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
+});
+
+//
 // PRODUCTOS
 //
 
@@ -287,6 +302,23 @@ JOIN provincias p ON u.id_provincia = p.id_provincia ORDER BY id_usuario;";
     console.log("QUERY: [ " + query + " ]");
     config_db.select_a_base_de_datos(query)
         .then(resultado => res.send(resultado), err => console.log(err));
+});
+
+// GET /usuarios/:email
+// devuelve los usuarios con el correo :email
+app.get('/usuarios/:email', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
+    var get_usuario = req.params.email;
+    var query = 
+"SELECT id_usuario, u.nombre, apellido, email, dni, \
+ciudad, direccion, estado, p.nombre AS 'provincia', pass, telefono, imagen \
+FROM usuarios u JOIN estados e ON u.id_estado = e.id_estado \
+JOIN provincias p ON u.id_provincia = p.id_provincia WHERE email = ?";
+        console.log("QUERY: [ " + query + " ], VARIABLES: [ " + get_usuario + " ]");
+        config_db.select_a_base_de_datos(query, get_usuario)
+            .then(resultado => res.send(resultado), err => console.log(err));
+    config_db.desconectar_db();
 });
 
 // GET /usuarios/:id_usuarios
