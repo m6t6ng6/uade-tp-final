@@ -43,6 +43,13 @@ body {
 
 .form-group input {
     height: 42px;
+    /*border: 2px solid black;*/
+}
+
+#provincia-group, #perfil-group {
+    min-height: 42px;
+    width: 100%;
+    border-radius: 5px;
 }
 
 .form-group::before {
@@ -52,6 +59,17 @@ body {
     left: 28px;
     font-size: 22px;
     padding-top: 4px;
+}
+
+#notificaciones {
+    margin: 0 0 20px 0;
+    color: orange;
+    min-height: 30px;
+}
+
+.error {
+    border: 2px solid orange;
+    border-radius: 5px;
 }
 
 .form-group#correo-group::before {
