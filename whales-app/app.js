@@ -7,8 +7,8 @@ const { join } = require('path');
 const { config } = require('process');
 
 const app = express();
-const host = "localhost";   // URL de la APP
-const port = 5000;          // PUERTO de la APP
+const host = process.env.APP_URL;    // URL de la APP
+const port = process.env.APP_PORT;   // PUERTO de la APP
 app.use(bodyParser.json());
 app.options('*', cors());
 app.use(cors());

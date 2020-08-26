@@ -2,10 +2,10 @@ const db = require('mysql');
 const Promise = require('promise');
 
 config = {
-    host: "mysql.matanga.net.ar",
-    port: 3306,
-    user: "root",
-    password: "uade" 
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT,
+    user: process.env.MYSQL_ROOT_USER,
+    password: process.env.MYSQL_ROOT_PASSWORD
 }
 
 module.exports.tabla = {

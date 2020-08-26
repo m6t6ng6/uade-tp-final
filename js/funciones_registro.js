@@ -1,11 +1,15 @@
 $(document).ready(function () {
 });
 
+var host = "whales.matanga.net.ar"; 
+var port = 5000;
+var endpoint = 'http://' + host + ':' + port
+
 // crea dropdown list de provincias
 $('#provincia-group').on('click', () => { 
 
     $.ajax({
-        url: 'http://localhost:5000/provincias',
+        url: endpoint + '/provincias',
         type: 'GET',
         dataType: 'json',
         success: (response) => {
@@ -43,7 +47,7 @@ $('#formularioRegistro').on('click', () => {
          $("#imagen-group").val() != "" && $("#perfil-group option:selected").val() != "" ) {
              
             $.ajax({
-                url: "http://localhost:5000/usuarios/" + $("#email-group").val(),
+                url: endpoint + "/usuarios/" + $("#email-group").val(),
                 type: 'GET',
                 dataType: 'json',
                 success: (response) => {
@@ -53,7 +57,7 @@ $('#formularioRegistro').on('click', () => {
         
                         $.ajax({
                 
-                            url: "http://localhost:5000/usuarios",
+                            url: endpoint + "/usuarios",
                             dataType: 'json',
                             type: 'POST',
                             contentType: 'application/json',
