@@ -3,7 +3,7 @@ $(document).ready(function () {
 
 var host = "whales.matanga.net.ar"; 
 var port = 5000;
-var endpoint = 'http://' + host + ':' + port
+var endpoint = 'http://' + host + ':' + port;
 
 // crea dropdown list de provincias
 $('#provincia-group').on('click', () => { 
@@ -75,6 +75,7 @@ $('#formularioRegistro').on('click', () => {
                                 "id_estado": $("#perfil-group option:selected").val() 
                             }),
                             success: (datos) => {
+                                console.log("hola");
                                 console.log(datos);
        
                             },
@@ -85,6 +86,8 @@ $('#formularioRegistro').on('click', () => {
                         })
                 
                     } else {
+
+                        console.log("hola");
                 
                         $("#correo-group").addClass("error")
                             .attr("data-toggle", "tooltip").attr("title", "El correo ya existe")
@@ -100,10 +103,10 @@ $('#formularioRegistro').on('click', () => {
                 }    
             });
 
-         } else {
+    } else {
              
-            $("#notificaciones").text("Debe completar todos los campos");
+        $("#notificaciones").text("Debe completar todos los campos");
 
-         }
+    }
     
 });
