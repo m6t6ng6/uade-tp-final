@@ -347,7 +347,6 @@ JOIN provincias p ON u.id_provincia = p.id_provincia WHERE id_usuario = ?";
 app.post('/usuarios', (req, res) => {
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
-    var i = 0;
     var post_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
                          req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
                          req.body.pass, req.body.telefono, req.body.imagen ];

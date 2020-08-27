@@ -110,6 +110,7 @@ $('#formularioRegistro').on('click', (e) => {
     
                             },
                             error: () => {
+                                console.log("hola");
                                 console.log("Ocurrió un error.");
                             }
         
