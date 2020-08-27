@@ -29,7 +29,8 @@ $('#provincia-group').on('click', () => {
 });
 
 // envia form completo al backend
-$('#formularioRegistro').on('click', () => {
+$('#formularioRegistro').on('click', (e) => {
+    e.preventDefault();
 
     console.log("Envia el formulario de registro al backend.");
 
@@ -38,14 +39,32 @@ $('#formularioRegistro').on('click', () => {
         .removeAttr("data-toggle", "tooltip").removeAttr("title", "El correo ya existe")
         .removeAttr("data-placement", "right");
 
+    $("#contrasena-group").removeClass("error")
+        .removeAttr("data-toggle", "tooltip").removeAttr("title", "Los campos de password no coinciden")
+        .removeAttr("data-placement", "left");
+
     $("#notificaciones").text("");
 
-    if ( $("#nombre-group").val() != "" && $("#apellido-group").val() != "" &&
-         $("#direccion-group").val() != "" && $("#ciudad-group").val() != "" &&
-         $("#provincia-group option:selected").val() != "" && $("#telefono-group").val() != "" &&
-         $("#email-group").val() != "" && $("#pass-group").val() != "" && Number($("#dni-group").val()) != "" &&
-         $("#imagen-group").val() != "" && $("#perfil-group option:selected").val() != "" ) {
-             
+    var k = false;
+
+    if ( $("#pass-group").val() === $("#pass-repetir-group").val() ) {
+        k = true;
+    } else {
+
+        $("#contrasena-group").addClass("error")
+        .attr("data-toggle", "tooltip").attr("title", "Los campos de password no coinciden")
+        .attr("data-placement", "right"); 
+
+        $("#notificaciones").text("");
+        $("#notificaciones").text("Los campos de contraseña no coinciden");
+    }
+
+    if ( k === true && $("#nombre-group").val() != "" && $("#apellido-group").val() != "" &&
+        $("#direccion-group").val() != "" && $("#ciudad-group").val() != "" &&
+        $("#provincia-group option:selected").val() != "" && $("#telefono-group").val() != "" &&
+        $("#email-group").val() != "" && $("#pass-group").val() != "" && Number($("#dni-group").val()) != "" &&
+        $("#imagen-group").val() != "" && $("#perfil-group option:selected").val() != "" ) {
+            
             $.ajax({
                 url: endpoint + "/usuarios/" + $("#email-group").val(),
                 type: 'GET',
@@ -75,9 +94,20 @@ $('#formularioRegistro').on('click', () => {
                                 "id_estado": $("#perfil-group option:selected").val() 
                             }),
                             success: (datos) => {
-                                console.log("hola");
                                 console.log(datos);
-       
+
+                                if ( datos != null ) {
+
+                                    $("#notificaciones").text("");
+                                    $("#notificaciones").text("Usuario creado correctamente");
+
+                                } else {
+
+                                    $("#notificaciones").text("");
+                                    $("#notificaciones").text("Ocurrió un error");
+
+                                }
+    
                             },
                             error: () => {
                                 console.log("Ocurrió un error.");
@@ -87,13 +117,12 @@ $('#formularioRegistro').on('click', () => {
                 
                     } else {
 
-                        console.log("hola");
-                
-                        $("#correo-group").addClass("error")
+                            $("#correo-group").addClass("error")
                             .attr("data-toggle", "tooltip").attr("title", "El correo ya existe")
                             .attr("data-placement", "right");
                         
-                        $("#notificaciones").text("El correo ya existe");
+                            $("#notificaciones").text("");
+                            $("#notificaciones").text("El correo ya existe");
                 
                     }
         
@@ -104,9 +133,12 @@ $('#formularioRegistro').on('click', () => {
             });
 
     } else {
-             
-        $("#notificaciones").text("Debe completar todos los campos");
+
+        if ( k === true ) {
+            $("#notificaciones").text("");
+            $("#notificaciones").text("Debe completar todos los campos");
+        }
 
     }
-    
+
 });

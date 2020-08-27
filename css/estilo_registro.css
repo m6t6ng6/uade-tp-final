@@ -33,7 +33,7 @@ body {
     height: 70%;
 }
 
-#correo-group input, #contrasena-group input {
+#correo-group input, #contrasena-group input, #contrasena-repetir-group input {
     height: 42px;
     font-size: 18px;
     border: 0;
@@ -80,6 +80,13 @@ body {
 }
 
 .form-group#contrasena-group::before {
+    /* ver documentacion de font awesome
+       https://fontawesome.com/icons/lock?style=solid
+    */
+    content: "\f023";
+}
+
+.form-group#contrasena-repetir-group::before {
     /* ver documentacion de font awesome
        https://fontawesome.com/icons/lock?style=solid
     */
