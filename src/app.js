@@ -32,7 +32,7 @@ app.get('/version', (req, res) => {
 // inicializacion de multer
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, 'uploads/');    // ATENCION: SIEMPRE CREAR LA CARPETA ANTES MANUALMENTE EN EL SERVIDOR !!! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !!!
+        cb(null, './uploads/');    // ATENCION: SIEMPRE CREAR LA CARPETA ANTES MANUALMENTE EN EL SERVIDOR !!! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !!!
     },
     filename: function(req, file, cb) {
         cb(null, new Date().toISOString() + "_" + file.originalname);
@@ -250,11 +250,11 @@ JOIN categorias c ON p.id_categoria = c.id_categoria WHERE id_producto = ?";
 
 // POST /productos
 // no permite modificar los hits_usuario para mantener integridad
-app.post('/productos', (req, res) => {
+app.post('/productos', upload.single('imagen'), (req, res) => {
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
-    console.log("BODY: [ " + req.body + " ]");
-    var post_usuario = [ req.body.nombre, req.body.id_categoria, req.body.id_marca, req.body.precio, req.body.descripcion, req.body.imagen ];
+    console.log(req.file);
+    var post_usuario = [ req.body.nombre, req.body.id_categoria, req.body.id_marca, req.body.precio, req.body.descripcion, req.file.path ];
     var query = "INSERT INTO productos (nombre, id_categoria, id_marca, precio, descripcion, imagen) VALUES (?, ?, ?, ?, ?, ?);";
     console.log("QUERY: [ " + query + " ], VARIABLES: [ " + post_usuario + " ]");
     config_db.select_a_base_de_datos(query, post_usuario)
@@ -378,10 +378,9 @@ JOIN provincias p ON u.id_provincia = p.id_provincia WHERE id_usuario = ?";
 
 // POST /usuarios
 app.post('/usuarios', upload.single('imagen'), (req, res) => {
-    console.log(req.file);
-    console.log(req.file.path);
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
+    console.log(req.file);
     var post_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
                          req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
                          req.body.pass, req.body.telefono, req.file.path ];
