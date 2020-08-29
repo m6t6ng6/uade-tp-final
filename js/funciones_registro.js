@@ -96,7 +96,7 @@ $('#formularioRegistro').on('click', (e) => {
                             success: (datos) => {
                                 console.log(datos);
 
-                                if ( datos != null ) {
+                                if ( datos ) {
 
                                     $("#notificaciones").text("");
                                     $("#notificaciones").text("Usuario creado correctamente");
@@ -110,7 +110,6 @@ $('#formularioRegistro').on('click', (e) => {
     
                             },
                             error: () => {
-                                console.log("hola");
                                 console.log("Ocurrió un error.");
                             }
         
