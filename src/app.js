@@ -2,6 +2,7 @@ const path = require('path');
 const config_db  = require('./config_db');
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 
 const cors = require('cors');
 const { join } = require('path');
@@ -21,11 +22,38 @@ const version = "Whales - TP UADE - Grupo 4 - " + fecha_version;
 /// hace publico el acceso desde el front a la carpeta publico del back
 const publicDirectory = path.join(__dirname, '../publico/');
 app.use('/', express.static(publicDirectory));
+app.use('/uploads', express.static('uploads'));
 
 app.get('/version', (req, res) => {
     console.log("version: " + version);
     res.send(version);
 });
+
+// inicializacion de multer
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'uploads/');    // ATENCION: SIEMPRE CREAR LA CARPETA ANTES MANUALMENTE EN EL SERVIDOR !!! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !!!
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + "_" + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    // acepto un archivo
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'image/png') cb(null, true);
+    // rechazo un archivo
+    else cb(null, false);
+}
+const upload = multer({ 
+    storage: storage, 
+    limits: {
+        fileSize: 1024 * 1024 * 5    // limite de 5 megas
+    },
+    fileFilter: fileFilter
+    });   // carpeta donde se guarda en el backend las fotos (no es publica, hay que hacerla accesible estaticamente)
+
+
 
 //
 // CATEGORIAS
@@ -225,7 +253,6 @@ JOIN categorias c ON p.id_categoria = c.id_categoria WHERE id_producto = ?";
 app.post('/productos', (req, res) => {
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
-    var i = 0;
     console.log("BODY: [ " + req.body + " ]");
     var post_usuario = [ req.body.nombre, req.body.id_categoria, req.body.id_marca, req.body.precio, req.body.descripcion, req.body.imagen ];
     var query = "INSERT INTO productos (nombre, id_categoria, id_marca, precio, descripcion, imagen) VALUES (?, ?, ?, ?, ?, ?);";
@@ -350,12 +377,14 @@ JOIN provincias p ON u.id_provincia = p.id_provincia WHERE id_usuario = ?";
 });
 
 // POST /usuarios
-app.post('/usuarios', (req, res) => {
+app.post('/usuarios', upload.single('imagen'), (req, res) => {
+    console.log(req.file);
+    console.log(req.file.path);
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
     var post_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
                          req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
-                         req.body.pass, req.body.telefono, req.body.imagen ];
+                         req.body.pass, req.body.telefono, req.file.path ];
     var query = 
 "INSERT INTO usuarios (apellido, ciudad, direccion, dni, email, id_estado, \
 id_provincia, nombre, pass, telefono, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
