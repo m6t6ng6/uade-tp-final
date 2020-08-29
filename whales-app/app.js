@@ -368,7 +368,6 @@ id_provincia, nombre, pass, telefono, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,
 app.put('/usuarios/:id_usuario', (req, res) => {
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
-    var i = 0;
     var put_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
                          req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
                          req.body.pass, req.body.telefono, req.body.imagen, req.params.id_usuario ];
