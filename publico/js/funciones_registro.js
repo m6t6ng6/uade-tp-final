@@ -118,6 +118,20 @@ $('#formularioRegistro').on('click', (e) => {
                                     $("#notificaciones").text("");
                                     $("#notificaciones").text("Usuario creado correctamente");
 
+                                    $.ajax({
+                                        url: endpoint + "/usuarios/" + $("#email-group").val(),
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        success: (response) => {
+                                           
+                                            $("#avatar").attr("src","http://whales.matanga.net.ar:5000/" + response[0].imagen); 
+                                            
+                                        },
+                                        error: () => {
+                                            console.log("Ocurrió un error.");
+                                        }   
+                                    });
+
                                 } else {
 
                                     $("#notificaciones").text("");
