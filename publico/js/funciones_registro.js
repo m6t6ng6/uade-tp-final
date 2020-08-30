@@ -2,7 +2,7 @@ $(document).ready(function () {
 });
 
 var host = "whales.matanga.net.ar"; 
-var port = 8000;
+var port = 5000;
 var endpoint = 'http://' + host + ':' + port;
 
 // crea dropdown list de provincias
