@@ -28,10 +28,38 @@ $('#provincia-group').on('click', () => {
     });
 });
 
+// añadido de foto en el front
+$('#imagen-group').on('change', () => {
+
+    var fd = new FormData();
+    var files = $('#imagen-group')[0].files[0];
+    fd.append('file',files);
+
+    var files = $('#imagen-group')[0].files[0];
+
+    console.log(fd);
+
+});
+
 // envia form completo al backend
 $('#formularioRegistro').on('click', (e) => {
+    // https://forum.jquery.com/topic/upload-file-and-json-data-in-the-same-post-request-using-jquery-ajax
     e.preventDefault();
 
+    var fd = new FormData();
+    
+    fd.append('imagen', $('#imagen-group')[0].files[0]);
+    fd.append('nombre', $("#nombre-group").val());
+    fd.append('apellido', $("#apellido-group").val());
+    fd.append('direccion', $("#direccion-group").val());
+    fd.append('ciudad', $("#ciudad-group").val());
+    fd.append('id_provincia', $("#provincia-group option:selected").val());
+    fd.append('telefono', $("#telefono-group").val());
+    fd.append('email', $("#email-group").val());
+    fd.append('pass', $("#pass-group").val());
+    fd.append('dni', Number($("#dni-group").val()));
+    fd.append('id_estado', $("#perfil-group option:selected").val());
+    
     console.log("Envia el formulario de registro al backend.");
 
     // quita todo lo añadido en notificaciones por errores
@@ -77,23 +105,16 @@ $('#formularioRegistro').on('click', (e) => {
                         $.ajax({
                 
                             url: endpoint + "/usuarios",
-                            dataType: 'json',
+                            //dataType: 'json',
                             type: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
-                                "nombre": $("#nombre-group").val(),
-                                "apellido": $("#apellido-group").val(),
-                                "direccion": $("#direccion-group").val(),
-                                "ciudad": $("#ciudad-group").val(),
-                                "id_provincia": $("#provincia-group option:selected").val(),
-                                "telefono": $("#telefono-group").val(),
-                                "email": $("#email-group").val(),
-                                "pass": $("#pass-group").val(),
-                                "dni": Number($("#dni-group").val()),
-                                "imagen": $("#imagen-group").val(),
-                                "id_estado": $("#perfil-group option:selected").val() 
-                            }),
-                            success: (datos) => {
+                            processData: false,
+                            //contentType: 'application/json',
+                            contentType: 'multipart/form-data',
+                            contentType: false,
+                            data: fd,
+                            //success: (datos) => {
+                            complete: (datos) => {
+
                                 console.log(datos);
 
                                 if ( datos ) {

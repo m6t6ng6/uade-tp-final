@@ -18,7 +18,7 @@
             <div class="col-sm-12 seccion-principal">
                 <div class="modal-content">
                     <div class="col-12 img-usuario">
-                        <img src="./img/whales-avatar-1.jpeg">
+                        <img id="avatar" src="./img/whales-avatar-1.jpeg">
                     </div>
                     <div id="notificaciones">
                     </div>
@@ -42,9 +42,10 @@
                                         <option value="" disabled selected hidden>Provincia</option>
                                     </select>
                                 </div>
-                                <div class="form-group">  <!-- FOTO -->
-                                    <input type="text" id="imagen-group" class="form-control" placeholder="foto"/>
-                                </div> 
+                                <div class="custom-file">   <!-- FOTO -->
+                                    <input type="file" class="custom-file-input" id="imagen-group">
+                                    <label class="custom-file-label" for="validatedCustomFile" id="imagen-nombre-group"></label>
+                                </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">    <!-- APELLIDO -->
@@ -54,7 +55,7 @@
                                     <input type="text" id="dni-group" class="form-control" maxlength="10" placeholder="dni"/>
                                 </div>
                                 <div class="form-group" id="contrasena-repetir-group">  <!-- REPETIR PASS -->
-                                    <input type="password" id="pass-repetir-group" class="form-control" placeholder="repita la contraseña"/>
+                                    <input type="password" id="pass-repetir-group" class="form-control" placeholder="contraseña"/>
                                 </div>
                                 <div class="form-group">  <!-- CIUDAD -->
                                     <input type="text" id="ciudad-group" class="form-control" placeholder="ciudad"/>
