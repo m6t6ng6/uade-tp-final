@@ -2,7 +2,7 @@ $(document).ready(function () {
 });
 
 var host = "whales.matanga.net.ar"; 
-var port = 5000;
+var port = 8000;
 var endpoint = 'http://' + host + ':' + port;
 
 // crea dropdown list de provincias
@@ -31,13 +31,11 @@ $('#provincia-group').on('click', () => {
 // añadido de foto en el front
 $('#imagen-group').on('change', () => {
 
-    var fd = new FormData();
-    var files = $('#imagen-group')[0].files[0];
-    fd.append('file',files);
+    var foto = $('#imagen-group')[0].files[0].name;
 
-    var files = $('#imagen-group')[0].files[0];
+    console.log(foto);
 
-    console.log(fd);
+    //$("#avatar").attr("src",$('#imagen-group')[0].files[0]);
 
 });
 
@@ -60,8 +58,6 @@ $('#formularioRegistro').on('click', (e) => {
     fd.append('dni', Number($("#dni-group").val()));
     fd.append('id_estado', $("#perfil-group option:selected").val());
     
-    console.log("Envia el formulario de registro al backend.");
-
     // quita todo lo añadido en notificaciones por errores
     $("#correo-group").removeClass('error')
         .removeAttr("data-toggle", "tooltip").removeAttr("title", "El correo ya existe")
