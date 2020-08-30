@@ -31,9 +31,9 @@ $('#provincia-group').on('click', () => {
 // añadido de foto en el front
 $('#imagen-group').on('change', () => {
 
-    var foto = $('#imagen-group')[0].files[0].name;
-
-    console.log(foto);
+    var nombreFoto = $('#imagen-group')[0].files[0].name;
+    $("#imagen-nombre-group").text(nombreFoto);
+    //console.log(foto);
 
     //$("#avatar").attr("src",$('#imagen-group')[0].files[0]);
 
