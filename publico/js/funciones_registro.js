@@ -32,7 +32,7 @@ $('#provincia-group').on('click', () => {
 $('#imagen-group').on('change', () => {
 
     var nombreFoto = $('#imagen-group')[0].files[0].name;
-    $("#imagen-nombre-group").text(nombreFoto.substring(0, 8) + "...");
+    $("#imagen-nombre-group").text(nombreFoto.substring(0, 40) + "...");
     //console.log(foto);
 
     //$("#avatar").attr("src",$('#imagen-group')[0].files[0]);
