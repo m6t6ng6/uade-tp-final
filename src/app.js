@@ -26,7 +26,9 @@ app.use('/uploads', express.static('uploads'));
 
 app.get('/version', (req, res) => {
     console.log("version: " + version);
-    res.send(version);
+    res.status(200).json({
+        version: version
+    });
 });
 
 // inicializacion de multer

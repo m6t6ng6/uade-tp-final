@@ -69,11 +69,10 @@ $('#formularioRegistro').on('click', (e) => {
 
     $("#notificaciones").text("");
 
-    var k = false;
+    var k1 = false;
 
-    if ( $("#pass-group").val() === $("#pass-repetir-group").val() ) {
-        k = true;
-    } else {
+    if ( $("#pass-group").val() === $("#pass-repetir-group").val() ) k1 = true;
+    else {
 
         $("#contrasena-group").addClass("error")
         .attr("data-toggle", "tooltip").attr("title", "Los campos de password no coinciden")
@@ -83,7 +82,21 @@ $('#formularioRegistro').on('click', (e) => {
         $("#notificaciones").text("Los campos de contraseña no coinciden");
     }
 
-    if ( k === true && $("#nombre-group").val() != "" && $("#apellido-group").val() != "" &&
+    var k2 = false;
+
+    if ( $("#email-group").val().match(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/) ) k2 = true;
+    else {
+
+        $("#correo-group").addClass("error")
+        .attr("data-toggle", "tooltip").attr("title", "No es un correo válido")
+        .attr("data-placement", "left"); 
+
+        $("#notificaciones").text("");
+        $("#notificaciones").text("No es un correo válido");
+        console.log("el correo no esta ok");
+    }
+
+    if ( k1 === true && k2 === true && $("#nombre-group").val() != "" && $("#apellido-group").val() != "" &&
         $("#direccion-group").val() != "" && $("#ciudad-group").val() != "" &&
         $("#provincia-group option:selected").val() != "" && $("#telefono-group").val() != "" &&
         $("#email-group").val() != "" && $("#pass-group").val() != "" && Number($("#dni-group").val()) != "" &&
@@ -165,7 +178,7 @@ $('#formularioRegistro').on('click', (e) => {
 
     } else {
 
-        if ( k === true ) {
+        if ( k1 === true && k2 === true) {
             $("#notificaciones").text("");
             $("#notificaciones").text("Debe completar todos los campos");
         }
