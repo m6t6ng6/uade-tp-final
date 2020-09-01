@@ -6,7 +6,7 @@ const multer = require('multer');
 
 const cors = require('cors');
 const { join } = require('path');
-const { config } = require('process');
+const { config, nextTick } = require('process');
 const { inherits } = require('util');
 
 const app = express();
@@ -378,26 +378,66 @@ JOIN provincias p ON u.id_provincia = p.id_provincia WHERE id_usuario = ?";
     config_db.desconectar_db();
 });
 
+// modelo
 // POST /usuarios
 app.post('/usuarios', upload.single('imagen'), (req, res) => {
     config_db.conectar_a_mysql();
     config_db.conectar_a_base_de_datos('trabajo_final01');
-    console.log(req.file);
+    var codigo = Math.random().toString(36).substring(2, 10);    // crea codigo de 8 caracteres aleatorios
+    var fechaCreacionCodigo = config_db.format_date();           // fecha en la que fue creado el codigo
     var post_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
                          req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
-                         req.body.pass, req.body.telefono, req.file.path ];
+                         req.body.pass, req.body.telefono, req.file.path, codigo, fechaCreacionCodigo ];
     var query = 
 "INSERT INTO usuarios (apellido, ciudad, direccion, dni, email, id_estado, \
-id_provincia, nombre, pass, telefono, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    console.log("QUERY: [ " + query + " ], VARIABLES: [ " + post_usuario + " ]");
+id_provincia, nombre, pass, telefono, imagen, codigo, codigo_validez) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    console.log({ query: query, variables: post_usuario });
     config_db.select_a_base_de_datos(query, post_usuario)
         .then(resultado => {
-            var msg = 
-"OK: [ msg: usuario ingresado correctamente, affectedRows: " + resultado.affectedRows + ", insertId: " + resultado.insertId + " ]";
+            var msg = { status: "201", msg: "usuario creado correctamente", affectedRows: resultado.affectedRows, insertId: resultado.insertId };
             console.log(msg);
-            res.send(msg);
-            }, err => console.log(err));
+            res.status(201).json(msg);
+            }, err => { res.status(500).json(err); console.log(err) });
     config_db.desconectar_db();
+});
+
+// POST /usuarios/validacion
+app.post('/usuarios/validacion', (req, res) => {
+    config_db.conectar_a_mysql();
+    config_db.conectar_a_base_de_datos('trabajo_final01');
+    var fechaActual = new Date();     // fecha y hora de cuando se coloca el codigo recibido
+    var post_usuario = [ req.body.codigo, req.body.email, req.body.pass ];
+    query = "SELECT id_usuario, email, pass, imagen, codigo, codigo_validez FROM usuarios WHERE codigo = ? AND email = ? AND pass = ?;";
+    console.log({ query: query, variables: post_usuario });
+    config_db.select_a_base_de_datos(query, post_usuario)
+        .then(resultado => {
+            if ( resultado.length > 0 ) {
+                if ( resultado[0].codigo === req.body.codigo && resultado[0].email === req.body.email && resultado[0].pass === req.body.pass ) {
+                    var diff = (fechaActual - new Date(resultado[0].codigo_validez)) / (1000 * 60 * 60);    // coeficiente de diferencia entre fechas medido en horas (ej: 1.5 significa que paso 1 hora y media)
+                    if ( diff < 12 ) {
+                        query = "UPDATE usuarios SET codigo = 'validado' WHERE id_usuario = " + resultado[0].id_usuario + ";";
+                        config_db.select_a_base_de_datos(query)
+                            .then(resultado => {
+                                var msg = { status: 202, msg: "usuario validado" };
+                                console.log(msg);
+                                res.status(201).json(msg);
+                            }, err => { res.status(500).json(err); console.log(err) });
+                    } else {
+                        var msg = { status: 401, msg: "no autorizado" };
+                        console.log(msg);
+                        res.status(201).json(msg); 
+                    }
+                } else {
+                    var msg = { status: 401, msg: "no autorizado" };
+                    console.log(msg);
+                    res.status(201).json(msg);
+                }
+            } else if ( resultado.length === 0 ) {
+                var msg = { status: 401, msg: "no autorizado" };
+                console.log(msg);
+                res.status(201).json(msg); 
+            }
+        }, err => { res.status(500).json(err); console.log(err) });
 });
 
 // PUT /usuarios/:id_usuario

@@ -127,7 +127,7 @@ $('#formularioRegistro').on('click', (e) => {
                                 if ( datos ) {
 
                                     $("#notificaciones").text("");
-                                    $("#notificaciones").text("Usuario creado correctamente");
+                                    $("#notificaciones").text("Usuario creado correctamente. Correo de validación enviado.");
 
                                     $.ajax({
                                         url: endpoint + "/usuarios/" + $("#email-group").val(),
@@ -137,6 +137,8 @@ $('#formularioRegistro').on('click', (e) => {
                                            
                                             $("#avatar").attr("src","http://whales.matanga.net.ar:5000/" + response[0].imagen); 
                                             
+                                            setTimeout(() => window.location.replace("http://whales.matanga.net.ar/validacion.html"), 5000);
+
                                         },
                                         error: () => {
                                             console.log("Ocurrió un error.");
