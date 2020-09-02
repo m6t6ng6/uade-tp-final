@@ -1,5 +1,10 @@
 const db = require('mysql');
-const Promise = require('promise');
+const credenciales = require('./setup.js');    // credenciales
+const nodemailer = require('nodemailer');   // paquete de nodemailer
+const Promise = require('promise');   // paquete de promesas
+const express = require('express');
+const bodyParser = require('body-parser');
+const { inherits } = require('util');
 
 config = {
     host: process.env.MYSQL_HOST,
@@ -116,4 +121,31 @@ module.exports.format_date = () => {
     var date = new Date();
     var date = date.setHours(date.getHours() - date.getTimezoneOffset()/60);
     return new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+}
+
+
+// ENVIO CORREO
+module.exports.enviar_correo = (from_string, to_string, asunto, texto) => {
+    let transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+          user: credenciales.email_auth.uade_testing.user,
+          pass: credenciales.email_auth.uade_testing.pass 
+      }
+    });
+  
+    let mailOptions = {
+      from: from_string,
+      to: to_string,
+      subject: asunto, 
+      text: texto
+    };
+    
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Correo enviado: ' + info.response);
+        }
+    });
 }
