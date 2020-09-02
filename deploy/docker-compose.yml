@@ -162,6 +162,8 @@ services:
     ports:
       - "5000:5000"
     environment:
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASS=${MAIL_PASS}
       - APP_URL=${APP_URL}
       - APP_PORT=${APP_PORT}
       - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
