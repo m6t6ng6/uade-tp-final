@@ -4,6 +4,7 @@
         <title>
             Walles
         </title>
+        <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link rel="stylesheet" href="walles.css">
     </head>
@@ -11,9 +12,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-xl-9 nombre">
-                    <p>
-                        WALLES <b class="eslogan"> For everyone </b>
-                    </p>
+                    <p>WALLES <b class="eslogan"> For everyone </b></p>
                 </div>
                 <div class="col-xl-3 col-12 contacto">
                     <button type="button"  class="btn btn-primary">Iniciar Sesion</button>
@@ -23,26 +22,22 @@
                 </div>
             </div>
 
-
             <div class="row">
-
-                <div class="col-4">
-                 <div class="offset-2 col-10">
-                     <div class="card perfil">
-                         <div class="card-body">
+                <div class="col-6">
+                    <div class="offset-2 col-10">
+                        <div class="card perfil">
+                            <div class="card-body">
                                  <h4 class="card-title">
-                                    <img src="https://competenciasdelsiglo21.com/wp-content/uploads/2019/04/disc-perfil-c-azul-948x640.jpg " alt="Girl in a jacket" width="100" height="100">
-                                    Usuario #4</h4>
+                                <img src="https://competenciasdelsiglo21.com/wp-content/uploads/2019/04/disc-perfil-c-azul-948x640.jpg " alt="Girl in a jacket" width="100" height="100">
+                                Usuario #4</h4>
                                  <p id="descripcion" class="card-text"></p>
                                  <a href="#" class="card-link">Contacto</a>
-                                    <a href="#" class="card-link">Mensajes</a>
-                                     <a href="#" class="card-link">Compras</a>
-                                     <a href="#" class="card-link">Cargar producto</a>
-                                 
+                                 <a href="#" class="card-link">Mensajes</a>
+                                 <a href="#" class="card-link">Compras</a>
+                                 <a href="#" class="card-link">Cargar producto</a>
                             </div>
                         </div>
-                    </div>
-                    <br>
+                    </div><br>
                     <div class="offset-2 col-10 filtros">
                         <h5 class="widget-title">Categorias</h5>
                         <a href="#" class="btn btn-primary Categorias" category="todos">Todos</a>
@@ -52,106 +47,52 @@
                         <a href="#" class="btn btn-primary Categorias" category="perfumeria">Perfumeria</a>
 
                     </div>
+                    <div class="col-12">
+                        <!-- Carrito -->
+                        <aside class="col-7 offset-2">
+                            <h2>Carrito</h2>
+                            <!-- Elementos del carrito -->
+                            <ul id="carrito" class="list-group"></ul>
+                            <hr>
+                            <!-- Precio total -->
+                            <p class="text-right">Total: <span id="total"></span>&euro;</p>
+                            <button id="boton-vaciar" class="btn btn-danger">Vaciar</button>
+                            <button id="boton-comprar" class="btn btn-primary Categorias">Comprar</button>
+                        </aside>
+                    </div>
+                </div> 
+           
+                <div class="col-6 ">
+                    <!-- Elementos generados a partir del JSON -->
+                    <main id="items" class="col-sm-8 row"></main>
                 </div>
-                <div class="col-8">
-
-                    <div class=" producto_card" category="muebleria" style="width: 18rem;">
-                     <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSBG6O_M0tSOhD4M1VxSx5DmJn1-d3u9baKw4L4VqM8phQ3pK2xcriwjkqIDhMDrPDgQbaOiC0x&usqp=CAc" alt="Card image cap">
-                     <div class="card-body">
-                          <h5 class="card-title">Producto #1</h5>
-                         <p class="card-text">Descripcion breve del producto.</p>
-                       <a href="#" class="btn btn-primary comprar">Comprar</a>
-                     </div>
-                    </div>
-
-
-                    <div class=" producto_card" category="muebleria"  style="width: 18rem;">
-                        <img class="card-img-top" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJ8AnwMBIgACEQEDEQH/xAAcAAABBAMBAAAAAAAAAAAAAAAAAQIGBwMEBQj/xABAEAABAwMCAwYDBAcHBQEAAAABAAIDBAURBiEHEjETQVFhcZEUIoEyoaKxIzNCUmKCwRUWJUNyksJTZMPR8CT/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQMCBP/EACMRAQEAAgEDBAMBAAAAAAAAAAABAhEDBBIxISJBcRNRYTL/2gAMAwEAAhEDEQA/ALxQhCAQkSoBCEmUHK1TemafsVXcns5zCz9HHnHO87Nb9SQqWm1TquueZqi+TwFxz2VMxrGs8h3++VNOMFdmKit7T9p4e8eI3P3FrfdQ60Xiz0cL4rnQOqpDJkOaccrcdF14c+aKbU2qadwfHfqp/L+zKxrwfXIVp6C1S7UdBK2rYyOupiBKGfZeD0cB3Z328lXcF90wHuMttkDSdh4Dw/8AvBbXD6uhp9bsFOSIK6OSIDoNvmbt/KfdPJrXhcaEIXLoIQhAIQhAIQhAIQhAIQhAiEiCqgJTUEqMa31PR6fo42VJcTUPbG4N3LWuJGfYOP8AKe/Csm0yuptU/EO+OuWsWUdO3L5XtihzsAX4DTv3ECP6kqKS259G6qju09xp6tpIjbHTtLWu6jny4HB8vXdWDryC0/3q0664Sdk/Epa9oJMrm4MTMjfd5G/quvxDdRQx2qsq42FwqA1xLc80eMuBHf3e/mtc+PW/483H1Hd2ennanJQ+SkdK25Bk7dhAYnZd6EDHuQtzS93uVtraaZjBLLDO2SMZ6kHofI7j6qcT3bQsgzHb443c3/Tz8vsk+N0zUVlD/YVMyKoifJM48nLnkje9u+O5zQsp616srrG1dlsrYrjb6eshc1zJo2vBacjcZW0oTZqh9FDDFA7kEbGsA6tIAwMhdzT2o6O+PrIISWVVFM6KeJ3UYJAcPFpwcFacvDeN5un6rHm+3aQhCxeoiVIUIFQhCAQhCAQhCBpTSUpTHFWIQlVNxhjIuEBk+w9mB6lpDR+F/urXUI4t2v4/TrZYxmaF+Y/9XUfU4LR5vXUTJGq6wS6krdMXxjg+Cmia+SHAzktBzknucBt5KKa6usmqqinhp2y00FEZG4fjLySATgdMcqlPCSsleyvonPLoWcksTT+zzZ5seWcff4qMz03ZXq8wu/y62YN8gXEj816OTPeHp8vDwceuazL48IjLYpGjMdS4nzapjwosU8t0qK2XsZW036L53kOaXggnlxvtkZz3laZDWnDht3qS8NZhTanraUfYqqQSA/xMdjHs4rLi1M49HU7vFdJtEYaCndUVs0cUMYy573YA91GeFEk9Zq2qq2hwY6KV8vo94LQfrn2Kh2r5Kyo1XcYa6pklgpZXOjY4/KxnVoA6DYgZ6lXVw70+LFp+LtW//tqgJqg+BI2b6Abe675+XvrHpOn/ABY+fKUIQheZ7gkSpECoSJUAhCEAhCEGNyxuWVyxkLpCBcbWdK+q0tcWxZEscXbxEdQ+Mh7cfVoXaCw15DLfUud9kQvJ9OUoKh0CY4NV1McDQyGpou2iaOgbzjYeh5m/yrlXpobrG/xDGRLG7/cwFbOj5fhr9bQT+rmlo3Z/dewuZ+KN3+5c+8ymTX+oGt6lzPwxxhbW+yPNhNc9+mlOPm6brb01VfBaussxdytfK+B3nztwB7la0gLZMOC0LtMaVtJVxfrKeqZIB44zj78LOXV29GU7sbHX4g81Jqy5S8nMJWxkDx/Rt/qCvQdDUR1dFBUwODopY2vYR3gjIVE8SXxv1CwjHZ1FHFI13qXD+gU+4OXn47TrrbM7M9ufyAHr2ZyW+24+ivJPWsuG+zFP0IQsm4SJUIESo70IBCEIBCEIGlMcnlMcrEIFXnFy7V1FFSUdPcH0NLVQzdvIxoJIHKMZIOBgnp4qw1VnHpjXW2hf+22Kpx6YYrSIJbqk08UFTS1AqAJ45mSvcCXOjdt0x5g+RWnVV8jtQVN0qIXsNS4l4YMgE+HsuZY3f4D5teSPxKWaXt8dy0bd5Xx81VSVPPG8ZBDRGwkbeXN9Susd5ejPO44Xuv05EtydK79HRVknn2Yx+a07kyur6fsorfM08zXAux3EFTPT39kOoS65V7YJGvLQxxyXDbfr5rciqdKsc/4urlc0OPL2Rzkb46Z8vvXLVD6+S43qO1U76J8EtvoJInyPdkSiNpePTZpHqV2OFl7bQaopJufEFa3sJc+Jxyn3x7lbFmxVz3aSDengpJyx2D1cCG9d/s83mqxt1ykpWQmHJlbgtA65HRaWekt+WONm7jPh69u9JUV9tmpqSukoZpAA2oiaHOZuM4B8tvqqc4h2XUWkoKSvp9XXaqbUTiDlkqHsLXFrnZ2OMfKVdVI9z6WF7xhzmNJHgcKt+PD+WwWnIyP7Q/8AFIsmsrg6Mm4jXW2i52+4R1NOHFoZVT/OSOuARjv7yrQ0tVXyppJP7w0DKSdjgGcr2u5xjc/KSAuZwqgEGh6DAxzukd+Nw/opcooQkSoBCEIBCEIGFMcU53VMJXUQKkuNV0mrrn8FSMBZSMMMgO5dz45i3029ldgVI8WbTV0l7qKnspDT1mHRyNBxzEbtz3HIJ9N0pFdWV/8AhdQzLRyPwGk/MeuTjuG49/VWXw0gqhaawULYJHTuMrmVBIaTuwNyBsCG5zg+ir18TIayaPlc176fnOw5Tgj7+qt3QsApLNaZBsKim+b/AFZJ/Irfp57nk63LXHJ/Vb60m+BuAjFlltksbMz0/PzsznZ8Z72keAGMeqi8l7yMxxE+fcvRmorFR6jt/wANWDllZvBUNHzRO8R5eI71SVZZDFfmW69S/DtdKY5JXAyNa7GQcZGxG/puuOTCyuun58csNfMSym1fbm6YmorZTVVSymoyyaeKnIj5+TBc5xwBk75KiXDF2lLfcJ7lqyrdz0fK+lpWRmQTO332zuMDY469eqlVx4Z1dBSyTwtpayONuS2OPEhHkCN/fKi1Gy3wHLbe2X1YCPvXXLlbrfwnT4YSZdt3t3dX8Yr1dpHQWLNqou5wwZ3jzd0b6N91CzqC61T2/F3Gqnw7mHayl2D9VIZ5YagcsdhpfX4Zn/pbOk9O0t21LSUtfbcUz+YvEQ5MYaSMkd2Rj6rKR6cr2y2ra4SahivOnBS8kcU9F8j2RjALTkhwHdvn2U5UD0ppSHTmq3TWvnbQ1NJIJInPLuR4czlwTvjBd181PFMpquePOZ47hO9KkSrloEIQgEIQgxO6lYysjupTCukoC1brbKW70ElFXR88MmM4OCCOhB7itoJyCstT8NrbBQyTUldVduQWQQvZ2hkfgkNHKM93XBwASdgo5ZdX22xWGK0XkVdNcaGRzXMfEXYPMSDnuGDjHUeYwTMafVFRdOLQs0Bb8BQU8oe0tGXSgDmd4jGeUfXxU4noKKplZNUUdPLKz7L5Imuc30JC7wzuF3GfLxY8k1kimnbqy+0DaykpqtsZGf0tM9gPoSMO9QSopxWsMtbb23SihdJU0m8sbR8z2DfIHiN/oT4BW+vOnFCWpl4g3AtqZmFuImljy3laGAgbeZPuu7zd01lGGPSTDLuwq5LTJLBbKOKoOZo4I2vP8QaAfvXPqtL2eskdIKN0cjju6Akfd0+5RrgLXVMj73TVdRJUPc6OcyyvL3k4LTknyAVvBS8s/SY9LlLvuQKDQ9CH5cyvlb+6+XlH4QFIKGzCij7OjpIadp68uBn1Peu8Eq5/L+o0vTTL/WVrUoqZ0WXy45ztgdwW2hCzttu63wwmGPbCJUIUdBCEIBCEIMLjuU1OcfmKbldoEqTKMohjaeBtQ6obBEJ3DldKGDmI8Ceqy5KY6RrGlz3BrWjJcTgAJsM8UwzDLHIPFjgfyQZclee9TzxzcRaiof2To2XAcwIy0ta4DfywN16E715svcmdTV5/7uU/jKix6PpqWmpGdnSU8MDP3YmBo9gs4TGnOClc9rBl7mtHi44QZEqa1wc0OaQQRkEdClyuVKhJlGUCoSA5SoBCEIBCEINd/wBo+qYsjh8x9UmF2hiSR7YmF8r2sYOrnHAXD1vd4bRp+sJqjBVSQPFPy55ubHUY6deqqbTmirhrSgfcZ7mOyEzowasvlcSACTufNBOuJGq7UzT1Tb6WuhqKqoAYG087T2eCDl2+w2x47lVIKqMU8Eraid1XuJGNi+Vm5xyvJydsbYGPNWBBwjEX629tI8IqLB9y/wDotyLhTajvPdbm7yZ2bf8AiUFdx6ku9OB8PcK2PHQipePuBWi/tZal8z3kveHPeTuc53Vvx8LtMAYlFdN5y1J/oAonVaZo6bWYtMDHCh+xyl7ieQmHI5uv+Z1QcCXVt6e9zJ66qfykgj4l4x9MrWkurpWSSGonbUAfJzN2dvvlwOR7FWs/hZpTfs4q2E+LKpx/PK0peE9n6wXa5s8nujd/wCG29w11faf7uwUNxuVPT1cL3txUThvOC4uBBPdvjHkp/DNHOzngljlZ+8xwcPuVUzcIY5R+gvmPKWjDvvDx+S4epOHVXpa0z3eG6Nc2EtDzTtfE/wCZwaCMHxKmheuSkyVEeGd5juOm6WnmrTPXRNcZBI5xfy85wSXbnbA71L+VAMPzLImNGCnqVQhCFAIQhBjLckppaVkwhXaK04r6Vu17NHU2iJ07ogWSQc4bkZyHDJHiQfVd3h7Yq2w6aho7gGfEmR8rwHZ5OY/ZyOuBhS0gJMBXY13RZG7vYLEYv4ne63C1MdHnvV2jVdCwj5m59VTmoK+lZxcgY2YNjbWUzHuDHcrHfICw7dSR3bbjfri6nseAcAFVZcNE1097ras0U7p57mJopW1MYYyLLXElp3P7Xf4bIRaTmNx9nCx9nk9SFmw9x6ABOEWOpVDGx7dfcKPa+slZfdMVVBQOaJ3Fj2AuwHlrg7lPrj3wpQGJeVc7VVvCzRt5tFebhd2/DBjXtZTl4c5xdjckEjHXv8FaIBSgYSqAb1TkgSqKEIQg/9k=" alt="Card image cap">
-                     <div class="card-body">
-                          <h5 class="card-title">Producto #1</h5>
-                          <p class="card-text">Descripcion breve del producto.</p>
-
-                          <a href="#" class="btn btn-primary comprar">Comprar</a>
-                      </div>
-                    </div>
-
-
-                    <div class=" producto_card" category="muebleria" style="width: 18rem;">
-                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQZDI5Kr292z6f_6vYmyTb19Ni_47eIUWZ7--L_RaYFXuXiYEe1v_bA5OMMUABGjL5jTKBp_MA&usqp=CAc" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto #1</h5>
-                            <p class="card-text">Descripcion breve del producto.</p>
-                        <a href="#" class="btn btn-primary comprar">Comprar</a>
-                        </div>
-                    </div>
-
-                    <div class=" producto_card" category="indumentaria" style="width: 18rem;">
-                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRMPdO8jaA0DNsaXP2iAm1rdZY4DtHnnAUj1A&usqp=CAU" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto #1</h5>
-                            <p class="card-text">Descripcion breve del producto.</p>
-                        <a href="#" class="btn btn-primary comprar">Comprar</a>
-                        </div>
-                    </div>
-                    
-                    <div class=" producto_card" category="indumentaria" style="width: 18rem;">
-                        <img class="card-img-top" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRMPdO8jaA0DNsaXP2iAm1rdZY4DtHnnAUj1A&usqp=CAU" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto #1</h5>
-                            <p class="card-text">Descripcion breve del producto.</p>
-                        <a href="#" class="btn btn-primary comprar">Comprar</a>
-                        </div>
-                    </div>
-
-                  
-
-                    <div class=" producto_card" category="electronica" style="width: 18rem;">
-                        <img class="card-img-top" src="data:image/jpeg;base64,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" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto #1</h5>
-                            <p class="card-text">Descripcion breve del producto.</p>
-                        <a href="#" class="btn btn-primary comprar">Comprar</a>
-                        </div>
-                    </div>
-
-                    <div class=" producto_card" category="electronica" style="width: 18rem;">
-                        <img class="card-img-top" src="https://images.bidcom.com.ar/resize?src=https://www.bidcom.com.ar/publicacionesML/productos/AMD00123/1000x1000-AMD00123-.jpg&w=500&q=100" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto #1</h5>
-                            <p class="card-text">Descripcion breve del producto.</p>
-                        <a href="#" class="btn btn-primary comprar">Comprar</a>
-                        </div>
-                    </div>
-
-
-                    <div class=" producto_card" category="perfumeria" style="width: 18rem;">
-                        <img class="card-img-top" src="https://http2.mlstatic.com/azzaro-wanted-hombre-perfume-original-150-perfumeria-D_NQ_NP_678281-MLA41120951121_032020-F.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto #1</h5>
-                            <p class="card-text">Descripcion breve del producto.</p>
-                        <a href="#" class="btn btn-primary comprar">Comprar</a>
-                        </div>
-                    </div>
-                    <div class=" producto_card" category="perfumeria" style="width: 18rem;">
-                        <img class="card-img-top" src="https://http2.mlstatic.com/azzaro-wanted-hombre-perfume-original-150-perfumeria-D_NQ_NP_678281-MLA41120951121_032020-F.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto #1</h5>
-                            <p class="card-text">Descripcion breve del producto.</p>
-                        <a href="#" class="btn btn-primary comprar">Comprar</a>
-                        </div>
-                    </div>
-                    <div class=" producto_card" category="perfumeria" style="width: 18rem;">
-                        <img class="card-img-top" src="https://d26lpennugtm8s.cloudfront.net/stores/110/479/products/ca001a31-a9d89f4de78b6d944e15436342988473-640-0.jpg" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Producto #1</h5>
-                            <p class="card-text">Descripcion breve del producto.</p>
-                        <a href="#" class="btn btn-primary comprar">Comprar</a>
-                        </div>
-                    </div>
-
-                </div>
+                
             </div>
         </div>
+        <script>
+            $(document).ready(function(){
+
+                $('#boton-comprar').click(function(e){
+                    e.preventDefault();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://localhost:3005/productos/comprar',
+                        contentType: 'application/json',
+                        data: JSON.stringify(
+                            {
+                                nombre: $('.card-title').val(),
+                                precio:$('.card-text').val(),
+                                imagen:$('.img-fluid').val(),
+                                categoria: ''
+                            }
+                        )
+                    })
+
+                })
+
+            });
+        </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="script.js">
         </script>
