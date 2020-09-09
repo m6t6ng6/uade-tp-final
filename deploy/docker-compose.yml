@@ -155,7 +155,7 @@ services:
           - uade_whales_mysql_db
 
   uade_whales_app:
-    image: m6t6ng6/whales-uade:0.6-beta
+    image: m6t6ng6/whales-uade:0.7-beta
     hostname: uade_whales_app
     container_name: uade_whales_app
     restart: always
