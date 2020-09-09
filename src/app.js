@@ -392,7 +392,7 @@ id_provincia, nombre, pass, telefono, imagen, codigo, codigo_validez) VALUES (?,
     console.log({ query: query, variables: post_usuario });
     f.select_a_base_de_datos(query, post_usuario)
         .then(resultado => {
-            var texto = "Bienvenido a Whales. Ingresá a http://whales.matanga.net.ar/validacion e ingresá este código de validación para habilitar tu cuenta: " + codigo;
+            var texto = "Bienvenido a Whales. Ingresá a http://whales.matanga.net.ar/validacion y pegá este código de validación para habilitar tu cuenta: " + codigo;
             f.enviar_correo("Whales", req.body.email, "Whales correo de Validación", texto);
             var msg = { status: "201", msg: "usuario creado correctamente", affectedRows: resultado.affectedRows, insertId: resultado.insertId };
             console.log(msg);
@@ -419,6 +419,8 @@ app.post('/usuarios/validacion', (req, res) => {
                         f.select_a_base_de_datos(query)
                             .then(resultado => {
                                 var msg = { status: 202, msg: "usuario validado" };
+                                var texto = "Tu código fue validado satisfactoriamente. Disfrutá comprar y vender en un sólo lugar rápido, fácil y seguro.";
+                                f.enviar_correo("Whales", req.body.email, "Bienvenido a Whales", texto);
                                 console.log(msg);
                                 res.status(201).json(msg);
                             }, err => { res.status(500).json(err); console.log(err) });
