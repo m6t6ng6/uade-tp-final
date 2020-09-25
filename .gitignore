@@ -1,5 +1,7 @@
-dev
+.gitignore
 package-lock.json
 /src/uploads/*
 /src/node_modules/
 /src/package-lock.json
+/deploy/dev
+/deploy/testing.sql

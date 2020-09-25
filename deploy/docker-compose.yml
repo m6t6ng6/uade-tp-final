@@ -161,6 +161,8 @@ services:
     restart: always
     ports:
       - "5000:5000"
+    volumes:
+      - ${APP_IMAGES_PATH}:/home/node/app/uploads
     environment:
       - MAIL_USER=${MAIL_USER}
       - MAIL_PASS=${MAIL_PASS}
