@@ -392,7 +392,7 @@ id_provincia, nombre, pass, telefono, imagen, codigo, codigo_validez) VALUES (?,
     console.log({ query: query, variables: post_usuario });
     f.select_a_base_de_datos(query, post_usuario)
         .then(resultado => {
-            var texto = "Bienvenido a Whales. Ingresá a http://whales.matanga.net.ar/validacion y pegá este código de validación para habilitar tu cuenta: " + codigo;
+            var texto = "Bienvenido a Whales. Ingresá a http://whales.matanga.net.ar/validacion y pegá este código de validación para habilitar tu cuenta: " + codigo + ". Recordá que el código tiene validez por 12 horas.";
             f.enviar_correo("Whales", req.body.email, "Whales correo de Validación", texto);
             var msg = { status: "201", msg: "usuario creado correctamente", affectedRows: resultado.affectedRows, insertId: resultado.insertId };
             console.log(msg);
