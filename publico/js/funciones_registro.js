@@ -54,7 +54,8 @@ $('#formularioRegistro').on('click', (e) => {
     fd.append('email', $("#email-group").val());
     fd.append('pass', $("#pass-group").val());
     fd.append('dni', Number($("#dni-group").val()));
-    fd.append('id_estado', $("#perfil-group option:selected").val());
+    //fd.append('id_estado', $("#perfil-group option:selected").val());
+    fd.append('id_estado', 3);   // siempre el cliente cuando se registra es comprador y vendedor
     
     // quita todo lo añadido en notificaciones por errores
     $("#correo-group").removeClass('error')
@@ -166,8 +167,10 @@ $('#formularioRegistro').on('click', (e) => {
                             .attr("data-placement", "right");
                         
                             $("#notificaciones").text("");
-                            $("#notificaciones").text("El correo ya existe");
-                
+                            $("#notificaciones").text("El correo ya existe.");
+
+                            setTimeout(() => window.location.replace("http://whales.matanga.net.ar/validacion.html"), 5000);
+                            
                     }
         
                 },
