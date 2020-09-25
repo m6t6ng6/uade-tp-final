@@ -424,10 +424,18 @@ app.post('/usuarios/validacion', (req, res) => {
                                 console.log(msg);
                                 res.status(201).json(msg);
                             }, err => { res.status(500).json(err); console.log(err) });
-                    } else {
-                        var msg = { status: 401, msg: "no autorizado" };
-                        console.log(msg);
-                        res.status(201).json(msg); 
+                    } else {   // si es mayor a 12 horas la introduccion del codigo, se crea un codigo nuevo y se envia nuevamente al cliente para que valide
+                        var codigo = Math.random().toString(36).substring(2, 10);    // crea codigo de 8 caracteres aleatorios
+                        var fechaCreacionCodigo = f.format_date();           // fecha en la que fue creado el codigo
+                        query = "UPDATE usuarios SET codigo = '" + codigo + "', codigo_validez = '" + fechaCreacionCodigo + "' WHERE id_usuario = " + resultado[0].id_usuario + ";";
+                        f.select_a_base_de_datos(query)
+                            .then(resultado => {
+                                var msg = { status: 401, msg: "no autorizado" };
+                                var texto = "Bienvenido a Whales. Ingresá a http://whales.matanga.net.ar/validacion y pegá este código de validación para habilitar tu cuenta: " + codigo + ". Recordá que el código tiene validez por 12 horas.";
+                                f.enviar_correo("Whales", req.body.email, "Bienvenido a Whales", texto);
+                                console.log(msg);
+                                res.status(201).json(msg);
+                            }, err => { res.status(500).json(err); console.log(err) });
                     }
                 } else {
                     var msg = { status: 401, msg: "no autorizado" };
@@ -491,6 +499,3 @@ function inicio() {
     var fecha = f.format_date();
     console.log('Inicio de aplicación. - ' + fecha);
 }
-
-
-
