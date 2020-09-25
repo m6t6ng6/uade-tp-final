@@ -412,7 +412,7 @@ app.post('/usuarios/validacion', (req, res) => {
     f.select_a_base_de_datos(query, post_usuario)
         .then(resultado => {
             if ( resultado.length > 0 ) {
-                if ( resultado[0].codigo === req.body.codigo && resultado[0].email === req.body.email && resultado[0].pass === req.body.pass ) {
+                if ( resultado[0].codigo != "validado" && resultado[0].codigo === req.body.codigo && resultado[0].email === req.body.email && resultado[0].pass === req.body.pass ) {
                     var diff = (fechaActual - new Date(resultado[0].codigo_validez)) / (1000 * 60 * 60);    // coeficiente de diferencia entre fechas medido en horas (ej: 1.5 significa que paso 1 hora y media)
                     if ( diff < 12 ) {
                         query = "UPDATE usuarios SET codigo = 'validado' WHERE id_usuario = " + resultado[0].id_usuario + ";";
