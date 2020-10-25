@@ -84,7 +84,7 @@ function listar_tablas_callback (err, resultado) {
 
 module.exports.listar_tablas = (nombre_de_la_base_de_datos) => con.query("SELECT table_name FROM information_schema.tables WHERE table_schema = '" + nombre_de_la_base_de_datos + "'", listar_tablas_callback);
 
-module.exports.select_a_base_de_datos = (query, array_get_usuario) => {
+module.exports.select_a_base_de_datos = (query, array_get_usuario, cb) => {
     return new Promise((resolve, reject) => {
         if (!array_get_usuario) {
             con.query(query, (err, resultado) => {
@@ -95,8 +95,17 @@ module.exports.select_a_base_de_datos = (query, array_get_usuario) => {
                     resolve(resultado);
                 }
             });    
-        } else {
+        } if (array_get_usuario && !cb) {
             con.query(query, array_get_usuario, (err, resultado) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log(resultado);
+                    resolve(resultado);
+                }
+            }); 
+        } if (array_get_usuario && cb) {
+            con.query(query, array_get_usuario, cb, (err, resultado) => {
                 if (err) {
                     reject(err);
                 } else {
