@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const secreto = require('./config');
+const secreto = process.env.SECRET;  // SECRETO de BCRYPT
 
 const cors = require('cors');
 const { join } = require('path');
@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.options('*', cors());
 app.use(cors());
 
-const fecha_version = "AGO-2020";
+const fecha_version = "OCT-2020";
 const version = "Whales - TP UADE - Grupo 4 - " + fecha_version;
 
 /// hace publico el acceso desde el front a la carpeta publico del back
@@ -396,22 +396,16 @@ id_provincia, nombre, pass, telefono, imagen, codigo, codigo_validez) VALUES (?,
     console.log({ query: query, variables: post_usuario });
     f.select_a_base_de_datos(query, post_usuario, async function (error, result) {
         if (error) throw error;
-        console.log(result.insertId);
         insertID = await result.insertId;
-        const token = jwt.sign({id: insertID}, secreto.secret, {
+        const token = jwt.sign({id: insertID}, secreto, {
             expiresIn: 60*60*2 //tiempo en segundos
         });
-        res.json({auth: true, token: token});
-        console.log("prueba de id: "+insertID);
-      //})
-        //.then(resultado => {
-            var texto = "Bienvenido a Whales. Ingresá a http://whales.matanga.net.ar/validacion y pegá este código de validación para habilitar tu cuenta: " + codigo + ". Recordá que el código tiene validez por 12 horas.";
-            f.enviar_correo("Whales", req.body.email, "Whales correo de Validación", texto);
-            var msg = { status: "201", msg: "usuario creado correctamente", affectedRows: resultado.affectedRows, insertId: resultado.insertId };
-            console.log(msg);
-            res.status(201).json(msg);
-            //}, err => { res.status(500).json(err); console.log(err) });
-    //});
+        var msg = { auth: true, token: token, status: "201", msg: "usuario creado correctamente", affectedRows: result.affectedRows, insertId: result.insertId };
+        console.log(msg);
+        res.status(201).json(msg);
+        var texto = "Bienvenido a Whales. Ingresá a http://whales.matanga.net.ar/validacion y pegá este código de validación para habilitar tu cuenta: " + codigo + ". Recordá que el código tiene validez por 12 horas.";
+        f.enviar_correo("Whales", req.body.email, "Whales correo de Validación", texto);
+        //}, err => { res.status(500).json(err); console.log(err) });
     }).then(resultado => {}, err => { res.status(500).json(err); console.log(err) });
     f.desconectar_db();
 });
