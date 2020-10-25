@@ -3,6 +3,9 @@ const f = require('./funciones_app.js');
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const secreto = require('./config');
 
 const cors = require('cors');
 const { join } = require('path');
@@ -378,14 +381,15 @@ JOIN provincias p ON u.id_provincia = p.id_provincia WHERE id_usuario = ?";
 
 // modelo
 // POST /usuarios
-app.post('/usuarios', upload.single('imagen'), (req, res) => {
+app.post('/usuarios', upload.single('imagen'), async (req, res, next) => {
     f.conectar_a_mysql();
     f.conectar_a_base_de_datos('trabajo_final01');
     var codigo = Math.random().toString(36).substring(2, 10);    // crea codigo de 8 caracteres aleatorios
     var fechaCreacionCodigo = f.format_date();           // fecha en la que fue creado el codigo
+    let passEncriptado = await bcrypt.hash(req.body.pass, 10);
     var post_usuario = [ req.body.apellido, req.body.ciudad, req.body.direccion, req.body.dni,
                          req.body.email, req.body.id_estado, req.body.id_provincia, req.body.nombre,
-                         req.body.pass, req.body.telefono, req.file.path, codigo, fechaCreacionCodigo ];
+                         passEncriptado, req.body.telefono, req.file.path, codigo, fechaCreacionCodigo ];
     var query = 
 "INSERT INTO usuarios (apellido, ciudad, direccion, dni, email, id_estado, \
 id_provincia, nombre, pass, telefono, imagen, codigo, codigo_validez) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
